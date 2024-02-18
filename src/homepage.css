@@ -249,6 +249,12 @@ main .btn:hover {
   flex-direction: column;
 }
 
+@media(max-width: 900px) {
+  .infinite-scroll-genre{
+    display: none;
+  }
+}
+
 .scroll {
   --time: 20s;
   position: relative;
@@ -305,3 +311,5 @@ main .btn:hover {
   background: #3fd2f9;
   cursor: pointer;
 }
+
+

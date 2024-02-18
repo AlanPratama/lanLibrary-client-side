@@ -1,6 +1,9 @@
 import { Header } from "../Components/Header";
 import UserLayout from "../Layouts/UserLayout";
 import "../homepage.css";
+import BookWithFilter from "./Admin/Book/bookWithFilter";
+
+
 export default function homepage({}) {
   var swiper = new Swiper(".swiper", {
     effect: "coverflow",
@@ -45,87 +48,86 @@ export default function homepage({}) {
     <UserLayout isActive="login">
       <Header />
       <div className="flex justify-center items-center w-full">
-      <main className="md:max-w-[95%] rounded-3xl">
-        <div className="content">
-          <h2>Our Popoular Books</h2>
-          <p className="text-2xl">
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-            Repudiandae quam magnam obcaecati error consequatur repellat fugiat,
-            deleniti nisi eum voluptates.
-          </p>
-          <ul className="counter">
-            <li>
-              <h3 className="text-2xl font-semibold">
-                <i className="fa-solid fa-book"></i>68+k
-              </h3>
-              <span>book collections</span>
-            </li>
-            <li>
-              <h3 className="text-2xl font-semibold">
-                <i className="fa-solid fa-user"></i>25,634
-              </h3>
-              <span>customers</span>
-            </li>
-          </ul>
-          <button className="btn">
-            See More Collection <i className="fa-solid fa-arrow-right"></i>
-          </button>
-        </div>
+        <main className="md:max-w-[95%] rounded-3xl">
+          <div className="content">
+            <h2>Our Popoular Books</h2>
+            <p className="text-2xl">
+              Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+              Repudiandae quam magnam obcaecati error consequatur repellat
+              fugiat, deleniti nisi eum voluptates.
+            </p>
+            <ul className="counter">
+              <li>
+                <h3 className="text-2xl font-semibold">
+                  <i className="fa-solid fa-book"></i>68+k
+                </h3>
+                <span>book collections</span>
+              </li>
+              <li>
+                <h3 className="text-2xl font-semibold">
+                  <i className="fa-solid fa-user"></i>25,634
+                </h3>
+                <span>customers</span>
+              </li>
+            </ul>
+            <button className="btn">
+              See More Collection <i className="fa-solid fa-arrow-right"></i>
+            </button>
+          </div>
 
-        <div className="swiper-container">
-          <div className="swiper">
-            <div className="swiper-wrapper">
-              <div
-                className="swiper-slide"
-                style={{
-                  background: "#0f2027",
-                  backgroundImage:
-                    'linear-gradient(to bottom, #2c536400, #203a4303, #0f2027cc), url("http://localhost:8000/assets/arva.png")',
-                  backgroundRepeat: "no-repeat", 
-                  backgroundPosition: "50% 50%", 
-                  backgroundSize: "cover", 
-                }}
-              >
-
-                <span>bestseller</span>
-                <div className="slide-content">
-                  <h3>The Raven</h3>
+          <div className="swiper-container">
+            <div className="swiper">
+              <div className="swiper-wrapper">
+                <div
+                  className="swiper-slide"
+                  style={{
+                    background: "#0f2027",
+                    backgroundImage:
+                      'linear-gradient(to bottom, #2c536400, #203a4303, #0f2027cc), url("http://localhost:8000/assets/arva.png")',
+                    backgroundRepeat: "no-repeat",
+                    backgroundPosition: "50% 50%",
+                    backgroundSize: "cover",
+                  }}
+                >
+                  <span>bestseller</span>
+                  <div className="slide-content">
+                    <h3>The Raven</h3>
+                  </div>
                 </div>
-              </div>
-              <div className="swiper-slide swiper-slide--two">
-                <span>bestseller</span>
-                <div className="slide-content">
-                  <h3>Mademoiselle</h3>
-                  <p>epic drama</p>
+                <div className="swiper-slide swiper-slide--two">
+                  <span>bestseller</span>
+                  <div className="slide-content">
+                    <h3>Mademoiselle</h3>
+                    <p>epic drama</p>
+                  </div>
                 </div>
-              </div>
-              <div className="swiper-slide swiper-slide--three">
-                <span>bestseller</span>
-              </div>
-              <div className="swiper-slide swiper-slide--four">
-                <span>bestseller</span>
-              </div>
-              <div className="swiper-slide swiper-slide--five">
-                <span>bestseller</span>
-              </div>
-              <div className="swiper-slide swiper-slide--six">
-                <span>bestseller</span>
-                <div className="slide-content">
-                  <h3>Woman in the dark</h3>
+                <div className="swiper-slide swiper-slide--three">
+                  <span>bestseller</span>
+                </div>
+                <div className="swiper-slide swiper-slide--four">
+                  <span>bestseller</span>
+                </div>
+                <div className="swiper-slide swiper-slide--five">
+                  <span>bestseller</span>
+                </div>
+                <div className="swiper-slide swiper-slide--six">
+                  <span>bestseller</span>
+                  <div className="slide-content">
+                    <h3>Woman in the dark</h3>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          <div className="swiper-pagination"></div>
-        </div>
-        <div className="circle"></div>
-      </main>
+            <div className="swiper-pagination"></div>
+          </div>
+          <div className="circle"></div>
+        </main>
       </div>
 
       <div className="infinite-scroll-genre">
-      <div className="scroll">
-        <div>
+        <div className="scroll">
+          <div>
             <span>HTML</span>
             <span>CSS</span>
             <span>JavaScript</span>
@@ -136,8 +138,8 @@ export default function homepage({}) {
             <span>Figma</span>
             <span>Angular</span>
             <span>Node JS</span>
-        </div>
-        <div>
+          </div>
+          <div>
             <span>HTML</span>
             <span>CSS</span>
             <span>JavaScript</span>
@@ -148,11 +150,11 @@ export default function homepage({}) {
             <span>Figma</span>
             <span>Angular</span>
             <span>Node JS</span>
+          </div>
         </div>
-    </div>
 
-    <div className="scroll">
-        <div>
+        <div className="scroll">
+          <div>
             <span>HTML</span>
             <span>CSS</span>
             <span>JavaScript</span>
@@ -163,8 +165,8 @@ export default function homepage({}) {
             <span>Figma</span>
             <span>Angular</span>
             <span>Node JS</span>
-        </div>
-        <div>
+          </div>
+          <div>
             <span>HTML</span>
             <span>CSS</span>
             <span>JavaScript</span>
@@ -175,10 +177,11 @@ export default function homepage({}) {
             <span>Figma</span>
             <span>Angular</span>
             <span>Node JS</span>
+          </div>
         </div>
-    </div>
-    
       </div>
+
+      <BookWithFilter/>
 
       {/* <div className="font-sans text-[#333] max-w-6xl md:max-w-screen-2xl mx-auto">
         <div className="grid md:grid-cols-2 items-center md:gap-8 gap-6">

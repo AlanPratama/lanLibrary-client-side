@@ -1,27 +1,25 @@
 import React, { useEffect, useState } from "react";
 import AdminLayout from "../../Layouts/AdminLayout";
 import { Link, useNavigate } from "react-router-dom";
-import Cookies from 'universal-cookie';
 
-export default function Dashboard({  }) {
+export default function Dashboard({ user, setUser }) {
   //       <Link to={'/auth/login'} onClick={logout} >Logout</Link>
   // console.log(user);
-  const [user, setUser] = useState("")
-  const cookie = new Cookies()
-  useEffect(() => {
-    (async () => {
-      const response = await fetch("http://localhost:8000/api/user", {
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-      });
-      const content = await response.json();
-      console.log(content);
-      console.log(cookie.get());
-      setUser(content.data);
-    })();
-  });
-  
- 
+  // const [user, setUser] = useState("")
+  // useEffect(() => {
+  //   (async () => {
+  //     const response = await fetch("http://localhost:8000/api/user", {
+  //       headers: { "Content-Type": "application/json" },
+  //       credentials: "include",
+  //     });
+  //     const content = await response.json();
+  //     console.log(content);
+  //     console.log(cookie.get());
+  //     setUser(content.data);
+  //   })();
+  // });
+
+  const navigate = useNavigate();
 
   const logout = async (e) => {
     e.preventDefault();
@@ -43,18 +41,26 @@ export default function Dashboard({  }) {
 
   let menu;
 
-  if (user) {
-    menu = (
-      <>
-        <h3 onClick={logout}>Logout</h3>
-      </>
-    );
-  } else {
-    menu = (
-      <>
-        <h3>UNAUTHORIZED</h3>
-      </>
-    );
+  try {
+    if (user) {
+      menu = (
+        <>
+          <h3 onClick={logout}>Logout</h3>
+        </>
+      )
+    }
+  } catch (error) {
+    if (!user) {
+      menu = (
+        <>
+          <h3>UNAUTHORIZED</h3>
+        </>
+      );
+  
+      useEffect(() => {
+        navigate('/auth/login')
+      })
+    }
   }
 
   //   const logout = async () => {
@@ -99,7 +105,7 @@ export default function Dashboard({  }) {
             </svg>
             <h3 className="text-3xl font-extrabold text-white mt-5">400+</h3>
             {menu}
-            <p className="font-semibold mt-3">{ user ? user.name : ''}</p>
+            <p className="font-semibold mt-3">{user ? user.name : ""}</p>
           </div>
           <div className="text-center py-6 bg-blue-600 rounded-lg shadow">
             <svg
