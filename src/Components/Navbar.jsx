@@ -45,7 +45,7 @@ export const Navbar = ({ isActive }) => {
             title="Company"
             className="inline-flex items-center lg:mx-auto"
           >
-            <img src="/assets/2.png" alt="Lan Library" className="w-[80px] p-0 text-deep-purple-accent-400" />
+            <img src="/assets/lanLib-lg.png" alt="Lan Library" className="w-[30px] mr-1 p-0 text-deep-purple-accent-400" />
             <span className="text-xl font-bold tracking-wide text-gray-800 uppercase">
               <span className="text-deep-purple-accent-400 text-2xl">L</span>an<span className="text-deep-purple-accent-400 text-2xl ml-0.5">L</span>ibrary
             </span>

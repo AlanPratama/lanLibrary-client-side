@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 export default function BookWithFilter() {
   return (
@@ -8,11 +9,11 @@ export default function BookWithFilter() {
         <span className="text-deep-purple-accent-400 ml-0.5">L</span>ibrary's
         Book Collections
       </h1>
-      <section className="pb-20 pt-2 bg-gray-50 font-poppins flex justify-center items-center">
+      <section className="pb-8 pt-2 bg-gray-50 font-poppins flex justify-center items-center">
         <div className="px-4 py-4 mx-auto sm:max-w-[95%] max-w-full lg:py-6 md:px-6">
           <div className="flex flex-wrap mb-24 -mx-3">
             {/* FILTER */}
-            <div className="w-full pr-2 lg:w-1/4 lg:block lg:sticky lg:top-2 lg:h-full">
+            <div className="w-full pr-2 lg:w-1/4 lg:block lg:sticky lg:top-24 lg:h-full">
               <details class="overflow-hidden rounded border border-gray-300 [&_summary::-webkit-details-marker]:hidden">
                 <summary class="flex cursor-pointer items-center justify-between gap-2 bg-white p-4 text-gray-900 transition">
                   <span class="text-2xl font-bold text-deep-purple-accent-400">
@@ -304,13 +305,13 @@ export default function BookWithFilter() {
                   {/* CARD START */}
                   <div className="border border-gray-300">
                     <div className="relative bg-gray-200">
-                      <a href="#" className="">
+                      <Link to={"/book-detail/slug"} className="">
                         <img
                           src="http://localhost:8000/assets/Ayah_20231205.jpg"
                           alt=""
                           className="h-auto sm:h-[300px] mx-auto "
                         />
-                      </a>
+                      </Link>
                     </div>
                     <div className="p-3 sm:block hidden">
                       <div className="flex items-center justify-between gap-2 mb-2">

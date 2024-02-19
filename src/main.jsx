@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import ReactDOM from "react-dom/client";
+// import ReactDOM from "react-dom/client";
 import "./index.css";
+import {createRoot} from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Homepage from "./Pages/homepage.jsx";
 import Login from "./Pages/Auth/login.jsx";
@@ -9,8 +10,9 @@ import AdminLayout from "./Layouts/AdminLayout.jsx";
 import Dashboard from "./Pages/Admin/dashboard.jsx";
 import Book from "./Pages/Admin/Book/book.jsx";
 import Error from "./Pages/Error/Error.jsx";
+import BookDetail from "./Pages/book/bookDetail.jsx";
 
-const root = ReactDOM.createRoot(document.getElementById("root"));
+const root = createRoot(document.getElementById("root"));
 
 const App = () => {
   const [user, setUser] = useState("");
@@ -26,14 +28,23 @@ const App = () => {
       console.log(content);
       setUser(content.data);
     })();
-  });
+  }, []);
 
   const router = createBrowserRouter([
+
+    // USER || USER || USER || USER || USER || USER || USER || USER
     {
       path: "/",
       element: <Homepage />,
       errorElement: <Error />,
     },
+
+    {
+      path: "/book-detail/slug",
+      element: <BookDetail />,
+    },
+
+
 
     // AUTH || AUTH || AUTH || AUTH || AUTH || AUTH
     {
@@ -44,6 +55,7 @@ const App = () => {
       path: "/auth/register",
       element: <Register />,
     },
+
 
     // ADMIN || ADMIN || ADMIN || ADMIN || ADMIN || ADMIN
     {

@@ -1,3 +1,4 @@
+import Cta from "../Components/Fragments/Cta";
 import { Header } from "../Components/Header";
 import UserLayout from "../Layouts/UserLayout";
 import "../homepage.css";
@@ -5,44 +6,7 @@ import BookWithFilter from "./Admin/Book/bookWithFilter";
 
 
 export default function homepage({}) {
-  var swiper = new Swiper(".swiper", {
-    effect: "coverflow",
-    grabCursor: true,
-    spaceBetween: 30,
-    centeredSlides: false,
-    coverflowEffect: {
-      rotate: 0,
-      stretch: 0,
-      depth: 0,
-      modifier: 1,
-      slideShadows: true,
-    },
-    loop: true,
-    pagination: {
-      el: ".swiper-pagination",
-      clickable: true,
-    },
-    keyboard: {
-      enabled: true,
-    },
-    mousewheel: {
-      thresholdDelta: 70,
-    },
-    breakpoints: {
-      460: {
-        slidesPerView: 3,
-      },
-      768: {
-        slidesPerView: 3,
-      },
-      1024: {
-        slidesPerView: 3,
-      },
-      1600: {
-        slidesPerView: 3.6,
-      },
-    },
-  });
+
 
   return (
     <UserLayout isActive="login">
@@ -182,6 +146,149 @@ export default function homepage({}) {
       </div>
 
       <BookWithFilter/>
+
+     <Cta title={"Ready to get started?"} description={"Start exploring our collection"} cta={"Get Started"} image="http://localhost:8000/assets/Ayah_20231205.jpg" />
+
+
+<div className="mt-8 text-center p-10 pb-1">
+    <h1 className="font-bold text-4xl mb-4">Our Books</h1>
+    {/* <h1 className="text-3xl"></h1> */}
+</div>
+
+
+<section id="Projects"
+    className="w-fit pb-12 mx-auto grid grid-cols-1 lg:grid-cols-4 md:grid-cols-2 justify-items-center justify-center gap-y-20 gap-x-14 mt-10 mb-5">
+
+
+    <div className="w-72 min-w-72 max-w-72 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
+        <a href="#">
+            <img src="http://localhost:8000/assets/Ayah_20231205.jpg"
+                    alt="Product" className="min-w-72 max-w-72 w-72 rounded-t-xl" />
+            <div className="px-4 py-3 w-72">
+                <span className="text-gray-400 mr-3 uppercase text-xs">Type Book</span>
+                <p className="text-lg font-bold text-black truncate block capitalize">Cerita Masa Lampau</p>
+                <div className="flex items-center">
+                    <p className="text-lg font-normal text-gray-800 cursor-auto my-1">- Andrea Hirata</p>
+                    <div className="ml-auto"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                            fill="currentColor" className="bi bi-bag-plus" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd"
+                                d="M8 7.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V12a.5.5 0 0 1-1 0v-1.5H6a.5.5 0 0 1 0-1h1.5V8a.5.5 0 0 1 .5-.5z" />
+                            <path
+                                d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z" />
+                        </svg></div>
+                </div>
+            </div>
+        </a>
+    </div>
+    
+    <div className="w-72 min-w-72 max-w-72 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
+        <a href="#">
+            <img src="http://localhost:8000/assets/Ayah_20231205.jpg"
+                    alt="Product" className="min-w-72 max-w-72 w-72 rounded-t-xl" />
+            <div className="px-4 py-3 w-72">
+                <span className="text-gray-400 mr-3 uppercase text-xs">Type Book</span>
+                <p className="text-lg font-bold text-black truncate block capitalize">Cerita Masa Lampau</p>
+                <div className="flex items-center">
+                    <p className="text-lg font-normal text-gray-800 cursor-auto my-1">- Andrea Hirata</p>
+                    <div className="ml-auto"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                            fill="currentColor" className="bi bi-bag-plus" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd"
+                                d="M8 7.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V12a.5.5 0 0 1-1 0v-1.5H6a.5.5 0 0 1 0-1h1.5V8a.5.5 0 0 1 .5-.5z" />
+                            <path
+                                d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z" />
+                        </svg></div>
+                </div>
+            </div>
+        </a>
+    </div>
+    
+    <div className="w-72 min-w-72 max-w-72 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
+        <a href="#">
+            <img src="http://localhost:8000/assets/Ayah_20231205.jpg"
+                    alt="Product" className="min-w-72 max-w-72 w-72 rounded-t-xl" />
+            <div className="px-4 py-3 w-72">
+                <span className="text-gray-400 mr-3 uppercase text-xs">Type Book</span>
+                <p className="text-lg font-bold text-black truncate block capitalize">Cerita Masa Lampau</p>
+                <div className="flex items-center">
+                    <p className="text-lg font-normal text-gray-800 cursor-auto my-1">- Andrea Hirata</p>
+                    <div className="ml-auto"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                            fill="currentColor" className="bi bi-bag-plus" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd"
+                                d="M8 7.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V12a.5.5 0 0 1-1 0v-1.5H6a.5.5 0 0 1 0-1h1.5V8a.5.5 0 0 1 .5-.5z" />
+                            <path
+                                d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z" />
+                        </svg></div>
+                </div>
+            </div>
+        </a>
+    </div>
+    
+    <div className="w-72 min-w-72 max-w-72 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
+        <a href="#">
+            <img src="http://localhost:8000/assets/Ayah_20231205.jpg"
+                    alt="Product" className="min-w-72 max-w-72 w-72 rounded-t-xl" />
+            <div className="px-4 py-3 w-72">
+                <span className="text-gray-400 mr-3 uppercase text-xs">Type Book</span>
+                <p className="text-lg font-bold text-black truncate block capitalize">Cerita Masa Lampau</p>
+                <div className="flex items-center">
+                    <p className="text-lg font-normal text-gray-800 cursor-auto my-1">- Andrea Hirata</p>
+                    <div className="ml-auto"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                            fill="currentColor" className="bi bi-bag-plus" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd"
+                                d="M8 7.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V12a.5.5 0 0 1-1 0v-1.5H6a.5.5 0 0 1 0-1h1.5V8a.5.5 0 0 1 .5-.5z" />
+                            <path
+                                d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z" />
+                        </svg></div>
+                </div>
+            </div>
+        </a>
+    </div>
+    
+    <div className="w-72 min-w-72 max-w-72 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
+        <a href="#">
+            <img src="http://localhost:8000/assets/Ayah_20231205.jpg"
+                    alt="Product" className="min-w-72 max-w-72 w-72 rounded-t-xl" />
+            <div className="px-4 py-3 w-72">
+                <span className="text-gray-400 mr-3 uppercase text-xs">Type Book</span>
+                <p className="text-lg font-bold text-black truncate block capitalize">Cerita Masa Lampau</p>
+                <div className="flex items-center">
+                    <p className="text-lg font-normal text-gray-800 cursor-auto my-1">- Andrea Hirata</p>
+                    <div className="ml-auto"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                            fill="currentColor" className="bi bi-bag-plus" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd"
+                                d="M8 7.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V12a.5.5 0 0 1-1 0v-1.5H6a.5.5 0 0 1 0-1h1.5V8a.5.5 0 0 1 .5-.5z" />
+                            <path
+                                d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z" />
+                        </svg></div>
+                </div>
+            </div>
+        </a>
+    </div>
+    
+    <div className="w-72 min-w-72 max-w-72 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
+        <a href="#">
+            <img src="http://localhost:8000/assets/Ayah_20231205.jpg"
+                    alt="Product" className="min-w-72 max-w-72 w-72 rounded-t-xl" />
+            <div className="px-4 py-3 w-72">
+                <span className="text-gray-400 mr-3 uppercase text-xs">Type Book</span>
+                <p className="text-lg font-bold text-black truncate block capitalize">Cerita Masa Lampau</p>
+                <div className="flex items-center">
+                    <p className="text-lg font-normal text-gray-800 cursor-auto my-1">- Andrea Hirata</p>
+                    <div className="ml-auto"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                            fill="currentColor" className="bi bi-bag-plus" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd"
+                                d="M8 7.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V12a.5.5 0 0 1-1 0v-1.5H6a.5.5 0 0 1 0-1h1.5V8a.5.5 0 0 1 .5-.5z" />
+                            <path
+                                d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z" />
+                        </svg></div>
+                </div>
+            </div>
+        </a>
+    </div>
+
+</section>
+
+
 
       {/* <div className="font-sans text-[#333] max-w-6xl md:max-w-screen-2xl mx-auto">
         <div className="grid md:grid-cols-2 items-center md:gap-8 gap-6">
