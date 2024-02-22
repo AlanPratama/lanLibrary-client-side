@@ -118,7 +118,7 @@ main .btn:hover {
 }
 
 .swiper-slide {
-  width: 10rem;
+  width: 16rem;
   height: 24rem;
   display: flex;
   flex-direction: column;
@@ -127,7 +127,6 @@ main .btn:hover {
   border-radius: 12px;
   box-shadow: -1px 5px 15px #0000001f;
   text-align: center;
-  opacity: 0.5;
   transition: opacity 0.4s ease-in;
 }
 .swiper-slide span {
@@ -170,67 +169,6 @@ main .btn:hover {
   width: 90%;
 }
 
-.swiper-slide--one h3 {
-  font-family: "Courgette", cursive;
-  font-weight: 300;
-}
-.swiper-slide--two {
-  background: linear-gradient(to bottom, #2c536400, #203a4303, #0f2027cc), url("https://cdn.pixabay.com/photo/2022/06/26/21/12/cover-7286312_1280.jpg") no-repeat 50% 50%/cover;
-}
-.swiper-slide--two h3 {
-  font-family: "Noto Serif Vithkuqi", serif;
-  font-weight: 300;
-}
-.swiper-slide--three {
-  background: url("https://upload.wikimedia.org/wikipedia/commons/9/92/THE_BOOK_cover_image.png") no-repeat 50% 50%/cover;
-}
-.swiper-slide--four {
-  background: url("https://covers.audiobooks.com/images/covers/full/9781511358378.jpg") no-repeat 50% 50%/cover;
-}
-.swiper-slide--five {
-  background: url("https://cdn.pixabay.com/photo/2015/02/20/16/59/deer-643340_1280.jpg") no-repeat 50% 50%/cover;
-}
-.swiper-slide--six {
-  background: linear-gradient(to bottom, #2c536400, #203a4303, #0f2027cc), url("https://cdn.pixabay.com/photo/2022/11/04/23/15/woman-7570834_1280.jpg") no-repeat 50% 50%/cover;
-}
-.swiper-slide--six h3 {
-  font-family: "Chonburi", cursive;
-  font-weight: 400;
-}
-
-.swiper-slide-active {
-  display: grid;
-  opacity: 1;
-}
-
-.swiper-pagination {
-  position: relative;
-  bottom: -0.313rem;
-  text-align: center;
-  margin-top: 35px;
-  width: auto;
-}
-.swiper-pagination-bullet {
-  border-radius: 0;
-  width: 1.5rem;
-  height: 0.25rem;
-  background: #fff;
-}
-.swiper-pagination-bullet-active {
-  background: #fff;
-}
-
-.circle {
-  position: absolute;
-  top: -8em;
-  left: -8em;
-  width: clamp(150px, 40vw, 400px);
-  height: clamp(150px, 40vw, 400px);
-  background: #d51a6d;
-  border-radius: 50%;
-  z-index: 1;
-  opacity: 1;
-}
 
 
 
@@ -241,7 +179,7 @@ main .btn:hover {
   justify-content: center;
   align-items: center;
   min-height: auto;
-  padding: 150px 0px;
+  padding: 80px 0px;
   background: #f6f6f6;
   flex-direction: column;
 }
@@ -271,26 +209,6 @@ main .btn:hover {
 .scroll div:nth-last-child() {
   animation: scroll2 var(--time) linear infinite;
   animation-delay: calc(var(--time)/-2);
-}
-
-@keyframes scroll {
-  0% {
-      transform: translateX(100%);
-  }
-
-  100% {
-      transform: translateX(-100%);
-  }
-}
-
-@keyframes scroll2 {
-  0% {
-      transform: translateX(0);
-  }
-
-  100% {
-      transform: translateX(-200%);
-  }
 }
 
 .scroll div span {

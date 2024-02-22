@@ -9,14 +9,14 @@ export const Navbar = ({ isActive }) => {
         <div className="relative flex grid items-center grid-cols-2 lg:grid-cols-3">
           <ul className="flex items-center hidden space-x-8 lg:flex">
             <li>
-              <a
-                href="/"
-                aria-label="Our product"
-                title="Our product"
+              <Link
+                to={'/'}
+                aria-label="Go To Homepage"
+                title="Go To Homepage"
                 className={`font-medium tracking-wide ${isActive == 'homepage' ? 'text-blue-700' : 'text-gray-700'} transition-colors duration-200 hover:text-deep-purple-accent-400`}
               >
                 Homepage
-              </a>
+              </Link>
             </li>
             <li>
               <a
