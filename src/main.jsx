@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 // import ReactDOM from "react-dom/client";
 import "./index.css";
 import {createRoot} from "react-dom/client";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, Navigate, RouterProvider } from "react-router-dom";
 import Homepage from "./Pages/homepage.jsx";
 import Login from "./Pages/Auth/login.jsx";
 import Register from "./Pages/Auth/register.jsx";
@@ -11,24 +11,53 @@ import Dashboard from "./Pages/Admin/dashboard.jsx";
 import Book from "./Pages/Admin/Book/book.jsx";
 import Error from "./Pages/Error/Error.jsx";
 import BookDetail from "./Pages/book/bookDetail.jsx";
+import axios from 'axios';
 
 const root = createRoot(document.getElementById("root"));
 
 const App = () => {
   const [user, setUser] = useState("");
+  const [auth, setAuth] = useState("unauthorized");
 
   useEffect(() => {
     (async () => {
-      const response = await fetch("http://localhost:8000/api/user", {
-        method: 'GET',
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-      });
-      const content = await response.json();
-      console.log(content);
+      const response = await axios.get('http://localhost:8000/api/user', { withCredentials: true });
+      console.log(response.data);
+      const content = response.data;
       setUser(content.data);
+      setAuth(content.status)
+      console.log('User:' + user);
     })();
   }, []);
+
+  const GuestMiddleware = ({ element }) => {
+    if (auth == 'success') {
+      
+      if (user.role == 'user') {
+        return <Navigate to={'/'} />
+      } else {
+        return <Navigate to={'/admin/dashboard'} />
+      }
+    } else {
+      return element
+    }
+  }
+
+  const AuthMiddleware = ({ element }) => {
+    if (auth == 'success') {
+      return element;
+    } else {
+      return <Navigate to={'/auth/login'} />
+    }
+  }
+
+  const OnlyLibManager = ({ element }) => {
+    if (auth == 'success' && user.role != 'user') {
+      return element
+    } else {
+      return <Navigate to={'/auth/login'} />
+    }
+  }
 
   const router = createBrowserRouter([
 
@@ -49,22 +78,22 @@ const App = () => {
     // AUTH || AUTH || AUTH || AUTH || AUTH || AUTH
     {
       path: "/auth/login",
-      element: <Login user={user} setUser={setUser} />,
+      element: <GuestMiddleware element={<Login setAuth={setAuth} setUser={setUser} /> } />,
     },
     {
       path: "/auth/register",
-      element: <Register />,
+      element: <GuestMiddleware element={<Register />} />,
     },
 
 
     // ADMIN || ADMIN || ADMIN || ADMIN || ADMIN || ADMIN
     {
       path: "/admin/dashboard",
-      element: <Dashboard user={user} setUser={setUser} />,
+      element: <OnlyLibManager element={<AdminLayout setAuth={setAuth} setUser={setUser} bgMenu="dashboard" ><Dashboard/></AdminLayout>} /> ,
     },
     {
       path: "/admin/book",
-      element: <Book />,
+      element: <OnlyLibManager element={<AdminLayout setAuth={setAuth} setUser={setUser} ><Book/></AdminLayout>} /> ,
     },
   ]);
 

@@ -1,91 +1,8 @@
 import React, { useEffect, useState } from "react";
 import AdminLayout from "../../Layouts/AdminLayout";
-import { Link, useNavigate } from "react-router-dom";
-
-export default function Dashboard({ user, setUser }) {
-  //       <Link to={'/auth/login'} onClick={logout} >Logout</Link>
-  // console.log(user);
-  // const [user, setUser] = useState("")
-  // useEffect(() => {
-  //   (async () => {
-  //     const response = await fetch("http://localhost:8000/api/user", {
-  //       headers: { "Content-Type": "application/json" },
-  //       credentials: "include",
-  //     });
-  //     const content = await response.json();
-  //     console.log(content);
-  //     console.log(cookie.get());
-  //     setUser(content.data);
-  //   })();
-  // });
-
-  const navigate = useNavigate();
-
-  const logout = async (e) => {
-    e.preventDefault();
-
-    try {
-      await fetch("http://localhost:8000/api/auth/logout", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-      });
-
-      await setUser("");
-
-      navigate("/auth/login");
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  let menu;
-
-  try {
-    if (user) {
-      menu = (
-        <>
-          <h3 onClick={logout}>Logout</h3>
-        </>
-      )
-    }
-  } catch (error) {
-    if (!user) {
-      menu = (
-        <>
-          <h3>UNAUTHORIZED</h3>
-        </>
-      );
+export default function Dashboard({ }) {
   
-      useEffect(() => {
-        navigate('/auth/login')
-      })
-    }
-  }
-
-  //   const logout = async () => {
-  //     await fetch('http://localhost:8000/api/auth/logout', {
-  //       method: 'POST',
-  //       headers: {'Content-Type' : 'application/json'},
-  //       credentials: 'include'
-  //     })
-  //     setUser('')
-  //   }
-
-  // let menu;
-
-  //   if (user) {
-  //     menu = (
-  //       <Link to={'/auth/login'} onClick={logout} >Logout</Link>
-  //     )
-  //   } else {
-  //     menu = (
-  //       <h3>UNAUTHORIZED</h3>
-  //     )
-  //   }
-
   return (
-    <AdminLayout bgMenu="dashboard">
       <div className="font-[sans-serif] text-[#fff] mt-8">
         <div className="grid lg:grid-cols-4 sm:grid-cols-2 gap-x-2 gap-y-12">
           <div className="text-center py-6 bg-blue-600 rounded-lg shadow">
@@ -104,8 +21,7 @@ export default function Dashboard({ user, setUser }) {
               />
             </svg>
             <h3 className="text-3xl font-extrabold text-white mt-5">400+</h3>
-            {menu}
-            <p className="font-semibold mt-3">{user ? user.name : ""}</p>
+            <p className="font-semibold mt-3">LALALAA</p>
           </div>
           <div className="text-center py-6 bg-blue-600 rounded-lg shadow">
             <svg
@@ -154,6 +70,5 @@ export default function Dashboard({ user, setUser }) {
           </div>
         </div>
       </div>
-    </AdminLayout>
   );
 }

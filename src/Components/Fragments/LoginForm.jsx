@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-export default function LoginForm({ user, setUser }) {
+export default function LoginForm({ setAuth, setUser }) {
 
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
@@ -32,6 +32,7 @@ export default function LoginForm({ user, setUser }) {
       if (content.status == "error") {
         setMessage(content.message);
       } else {
+        setAuth(content.status)
         setUser(user2);
         if (user2.role == "admin") {
           navigate("/admin/dashboard");
