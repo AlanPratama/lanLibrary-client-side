@@ -14,62 +14,62 @@ export default function BookWithFilter() {
           <div className="flex flex-wrap mb-24 -mx-3">
             {/* FILTER */}
             <div className="w-full pr-2 lg:w-1/4 lg:block lg:sticky lg:top-24 lg:h-full">
-              <details class="overflow-hidden rounded border border-gray-300 [&_summary::-webkit-details-marker]:hidden">
-                <summary class="flex cursor-pointer items-center justify-between gap-2 bg-white p-4 text-gray-900 transition">
-                  <span class="text-2xl font-bold text-deep-purple-accent-400">
+              <details className="overflow-hidden rounded border border-gray-300 [&_summary::-webkit-details-marker]:hidden">
+                <summary className="flex cursor-pointer items-center justify-between gap-2 bg-white p-4 text-gray-900 transition">
+                  <span className="text-2xl font-bold text-deep-purple-accent-400">
                     {" "}
                     Filter Book{" "}
                   </span>
                 </summary>
               </details>
 
-              <details class="overflow-hidden rounded border border-gray-300 [&_summary::-webkit-details-marker]:hidden">
-                <summary class="flex cursor-pointer items-center justify-between gap-2 bg-white p-4 text-gray-900 transition">
-                  <span class="text-xl font-bold"> Type Book </span>
+              <details className="overflow-hidden rounded border border-gray-300 [&_summary::-webkit-details-marker]:hidden">
+                <summary className="flex cursor-pointer items-center justify-between gap-2 bg-white p-4 text-gray-900 transition">
+                  <span className="text-xl font-bold"> Type Book </span>
 
-                  <span class="transition group-open:-rotate-180">
+                  <span className="transition group-open:-rotate-180">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
                       viewBox="0 0 24 24"
-                      stroke-width="1.5"
+                      strokeWidth="1.5"
                       stroke="currentColor"
-                      class="h-4 w-4"
+                      className="h-4 w-4"
                     >
                       <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                         d="M19.5 8.25l-7.5 7.5-7.5-7.5"
                       />
                     </svg>
                   </span>
                 </summary>
 
-                <div class="border-t border-gray-200 bg-white">
-                  <header class="flex items-center justify-between p-4">
-                    <span class="text-sm text-gray-700"> 0 Selected </span>
+                <div className="border-t border-gray-200 bg-white">
+                  <header className="flex items-center justify-between p-4">
+                    <span className="text-sm text-gray-700"> 0 Selected </span>
 
                     <button
                       type="button"
-                      class="text-sm text-gray-900 underline underline-offset-4"
+                      className="text-sm text-gray-900 underline underline-offset-4"
                     >
                       Reset
                     </button>
                   </header>
 
-                  <ul class="space-y-1 border-t border-gray-200 p-4">
+                  <ul className="space-y-1 border-t border-gray-200 p-4">
                     <li>
                       <label
-                        for="FilterInStock"
-                        class="inline-flex items-center gap-2"
+                        htmlFor="FilterInStock"
+                        className="inline-flex items-center gap-2"
                       >
                         <input
                           type="checkbox"
                           id="FilterInStock"
-                          class="size-5 rounded border-gray-300"
+                          className="size-5 rounded border-gray-300"
                         />
 
-                        <span class="text-sm font-medium text-gray-700">
+                        <span className="text-sm font-medium text-gray-700">
                           {" "}
                           In Stock (5+){" "}
                         </span>
@@ -78,16 +78,16 @@ export default function BookWithFilter() {
 
                     <li>
                       <label
-                        for="FilterPreOrder"
-                        class="inline-flex items-center gap-2"
+                        htmlFor="FilterPreOrder"
+                        className="inline-flex items-center gap-2"
                       >
                         <input
                           type="checkbox"
                           id="FilterPreOrder"
-                          class="size-5 rounded border-gray-300"
+                          className="size-5 rounded border-gray-300"
                         />
 
-                        <span class="text-sm font-medium text-gray-700">
+                        <span className="text-sm font-medium text-gray-700">
                           {" "}
                           Pre Order (3+){" "}
                         </span>
@@ -96,16 +96,16 @@ export default function BookWithFilter() {
 
                     <li>
                       <label
-                        for="FilterOutOfStock"
-                        class="inline-flex items-center gap-2"
+                        htmlFor="FilterOutOfStock"
+                        className="inline-flex items-center gap-2"
                       >
                         <input
                           type="checkbox"
                           id="FilterOutOfStock"
-                          class="size-5 rounded border-gray-300"
+                          className="size-5 rounded border-gray-300"
                         />
 
-                        <span class="text-sm font-medium text-gray-700">
+                        <span className="text-sm font-medium text-gray-700">
                           {" "}
                           Out of Stock (10+){" "}
                         </span>
@@ -114,53 +114,53 @@ export default function BookWithFilter() {
                   </ul>
                 </div>
               </details>
-              <details class="overflow-hidden rounded border border-gray-300 [&_summary::-webkit-details-marker]:hidden">
-                <summary class="flex cursor-pointer items-center justify-between gap-2 bg-white p-4 text-gray-900 transition">
-                  <span class="text-xl font-bold"> Categories </span>
+              <details className="overflow-hidden rounded border border-gray-300 [&_summary::-webkit-details-marker]:hidden">
+                <summary className="flex cursor-pointer items-center justify-between gap-2 bg-white p-4 text-gray-900 transition">
+                  <span className="text-xl font-bold"> Categories </span>
 
-                  <span class="transition group-open:-rotate-180">
+                  <span className="transition group-open:-rotate-180">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
                       viewBox="0 0 24 24"
-                      stroke-width="1.5"
+                      strokeWidth="1.5"
                       stroke="currentColor"
-                      class="h-4 w-4"
+                      className="h-4 w-4"
                     >
                       <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                         d="M19.5 8.25l-7.5 7.5-7.5-7.5"
                       />
                     </svg>
                   </span>
                 </summary>
 
-                <div class="border-t border-gray-200 bg-white">
-                  <header class="flex items-center justify-between p-4">
-                    <span class="text-sm text-gray-700"> 0 Selected </span>
+                <div className="border-t border-gray-200 bg-white">
+                  <header className="flex items-center justify-between p-4">
+                    <span className="text-sm text-gray-700"> 0 Selected </span>
 
                     <button
                       type="button"
-                      class="text-sm text-gray-900 underline underline-offset-4"
+                      className="text-sm text-gray-900 underline underline-offset-4"
                     >
                       Reset
                     </button>
                   </header>
 
-                  <ul class="space-y-1 border-t border-gray-200 p-4">
+                  <ul className="space-y-1 border-t border-gray-200 p-4">
                     <li>
                       <label
-                        for="FilterInStock"
-                        class="inline-flex items-center gap-2"
+                        htmlFor="FilterInStock"
+                        className="inline-flex items-center gap-2"
                       >
                         <input
                           type="checkbox"
                           id="FilterInStock"
-                          class="size-5 rounded border-gray-300"
+                          className="size-5 rounded border-gray-300"
                         />
 
-                        <span class="text-sm font-medium text-gray-700">
+                        <span className="text-sm font-medium text-gray-700">
                           {" "}
                           In Stock (5+){" "}
                         </span>
@@ -169,16 +169,16 @@ export default function BookWithFilter() {
 
                     <li>
                       <label
-                        for="FilterPreOrder"
-                        class="inline-flex items-center gap-2"
+                        htmlFor="FilterPreOrder"
+                        className="inline-flex items-center gap-2"
                       >
                         <input
                           type="checkbox"
                           id="FilterPreOrder"
-                          class="size-5 rounded border-gray-300"
+                          className="size-5 rounded border-gray-300"
                         />
 
-                        <span class="text-sm font-medium text-gray-700">
+                        <span className="text-sm font-medium text-gray-700">
                           {" "}
                           Pre Order (3+){" "}
                         </span>
@@ -187,16 +187,16 @@ export default function BookWithFilter() {
 
                     <li>
                       <label
-                        for="FilterOutOfStock"
-                        class="inline-flex items-center gap-2"
+                        htmlFor="FilterOutOfStock"
+                        className="inline-flex items-center gap-2"
                       >
                         <input
                           type="checkbox"
                           id="FilterOutOfStock"
-                          class="size-5 rounded border-gray-300"
+                          className="size-5 rounded border-gray-300"
                         />
 
-                        <span class="text-sm font-medium text-gray-700">
+                        <span className="text-sm font-medium text-gray-700">
                           {" "}
                           Out of Stock (10+){" "}
                         </span>
@@ -205,53 +205,53 @@ export default function BookWithFilter() {
                   </ul>
                 </div>
               </details>
-              <details class="overflow-hidden rounded border border-gray-300 [&_summary::-webkit-details-marker]:hidden">
-                <summary class="flex cursor-pointer items-center justify-between gap-2 bg-white p-4 text-gray-900 transition">
-                  <span class="text-xl font-bold"> Categories </span>
+              <details className="overflow-hidden rounded border border-gray-300 [&_summary::-webkit-details-marker]:hidden">
+                <summary className="flex cursor-pointer items-center justify-between gap-2 bg-white p-4 text-gray-900 transition">
+                  <span className="text-xl font-bold"> Categories </span>
 
-                  <span class="transition group-open:-rotate-180">
+                  <span className="transition group-open:-rotate-180">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
                       viewBox="0 0 24 24"
-                      stroke-width="1.5"
+                      strokeWidth="1.5"
                       stroke="currentColor"
-                      class="h-4 w-4"
+                      className="h-4 w-4"
                     >
                       <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                         d="M19.5 8.25l-7.5 7.5-7.5-7.5"
                       />
                     </svg>
                   </span>
                 </summary>
 
-                <div class="border-t border-gray-200 bg-white">
-                  <header class="flex items-center justify-between p-4">
-                    <span class="text-sm text-gray-700"> 0 Selected </span>
+                <div className="border-t border-gray-200 bg-white">
+                  <header className="flex items-center justify-between p-4">
+                    <span className="text-sm text-gray-700"> 0 Selected </span>
 
                     <button
                       type="button"
-                      class="text-sm text-gray-900 underline underline-offset-4"
+                      className="text-sm text-gray-900 underline underline-offset-4"
                     >
                       Reset
                     </button>
                   </header>
 
-                  <ul class="space-y-1 border-t border-gray-200 p-4">
+                  <ul className="space-y-1 border-t border-gray-200 p-4">
                     <li>
                       <label
-                        for="FilterInStock"
-                        class="inline-flex items-center gap-2"
+                        htmlFor="FilterInStock"
+                        className="inline-flex items-center gap-2"
                       >
                         <input
                           type="checkbox"
                           id="FilterInStock"
-                          class="size-5 rounded border-gray-300"
+                          className="size-5 rounded border-gray-300"
                         />
 
-                        <span class="text-sm font-medium text-gray-700">
+                        <span className="text-sm font-medium text-gray-700">
                           {" "}
                           In Stock (5+){" "}
                         </span>
@@ -260,16 +260,16 @@ export default function BookWithFilter() {
 
                     <li>
                       <label
-                        for="FilterPreOrder"
-                        class="inline-flex items-center gap-2"
+                        htmlFor="FilterPreOrder"
+                        className="inline-flex items-center gap-2"
                       >
                         <input
                           type="checkbox"
                           id="FilterPreOrder"
-                          class="size-5 rounded border-gray-300"
+                          className="size-5 rounded border-gray-300"
                         />
 
-                        <span class="text-sm font-medium text-gray-700">
+                        <span className="text-sm font-medium text-gray-700">
                           {" "}
                           Pre Order (3+){" "}
                         </span>
@@ -278,16 +278,16 @@ export default function BookWithFilter() {
 
                     <li>
                       <label
-                        for="FilterOutOfStock"
-                        class="inline-flex items-center gap-2"
+                        htmlFor="FilterOutOfStock"
+                        className="inline-flex items-center gap-2"
                       >
                         <input
                           type="checkbox"
                           id="FilterOutOfStock"
-                          class="size-5 rounded border-gray-300"
+                          className="size-5 rounded border-gray-300"
                         />
 
-                        <span class="text-sm font-medium text-gray-700">
+                        <span className="text-sm font-medium text-gray-700">
                           {" "}
                           Out of Stock (10+){" "}
                         </span>
@@ -331,8 +331,8 @@ export default function BookWithFilter() {
                         href="#"
                         className="text-2xl py-3 flex justify-center items-center transition-all w-1/2 text-gray-500 hover:text-red-500"
                       >
-                        <i class="fa-regular fa-heart"></i>
-                        {/* <i class="fa-solid fa-heart"></i> */}
+                        <i className="fa-regular fa-heart"></i>
+                        {/* <i className="fa-solid fa-heart"></i> */}
                       </a>
                       {/* <span className="text-xl text-gray-600">|</span> */}
                       <a
@@ -340,7 +340,7 @@ export default function BookWithFilter() {
                         className="text-2xl text-medium py-3 flex justify-center items-center transition-all w-1/2  text-deep-purple-accent-400"
                       >
                         20
-                        {/* <i class="fa-solid fa-users"></i> */}
+                        {/* <i className="fa-solid fa-users"></i> */}
                       </a>
                     </div>
                   </div>
@@ -376,8 +376,8 @@ export default function BookWithFilter() {
                         href="#"
                         className="text-2xl py-3 flex justify-center items-center transition-all w-1/2 text-gray-500 hover:text-red-500"
                       >
-                        <i class="fa-regular fa-heart"></i>
-                        {/* <i class="fa-solid fa-heart"></i> */}
+                        <i className="fa-regular fa-heart"></i>
+                        {/* <i className="fa-solid fa-heart"></i> */}
                       </a>
                       {/* <span className="text-xl text-gray-600">|</span> */}
                       <a
@@ -385,7 +385,7 @@ export default function BookWithFilter() {
                         className="text-2xl text-medium py-3 flex justify-center items-center transition-all w-1/2  text-deep-purple-accent-400"
                       >
                         20
-                        {/* <i class="fa-solid fa-users"></i> */}
+                        {/* <i className="fa-solid fa-users"></i> */}
                       </a>
                     </div>
                   </div>
@@ -421,8 +421,8 @@ export default function BookWithFilter() {
                         href="#"
                         className="text-2xl py-3 flex justify-center items-center transition-all w-1/2 text-gray-500 hover:text-red-500"
                       >
-                        <i class="fa-regular fa-heart"></i>
-                        {/* <i class="fa-solid fa-heart"></i> */}
+                        <i className="fa-regular fa-heart"></i>
+                        {/* <i className="fa-solid fa-heart"></i> */}
                       </a>
                       {/* <span className="text-xl text-gray-600">|</span> */}
                       <a
@@ -430,7 +430,7 @@ export default function BookWithFilter() {
                         className="text-2xl text-medium py-3 flex justify-center items-center transition-all w-1/2  text-deep-purple-accent-400"
                       >
                         20
-                        {/* <i class="fa-solid fa-users"></i> */}
+                        {/* <i className="fa-solid fa-users"></i> */}
                       </a>
                     </div>
                   </div>
@@ -466,8 +466,8 @@ export default function BookWithFilter() {
                         href="#"
                         className="text-2xl py-3 flex justify-center items-center transition-all w-1/2 text-gray-500 hover:text-red-500"
                       >
-                        <i class="fa-regular fa-heart"></i>
-                        {/* <i class="fa-solid fa-heart"></i> */}
+                        <i className="fa-regular fa-heart"></i>
+                        {/* <i className="fa-solid fa-heart"></i> */}
                       </a>
                       {/* <span className="text-xl text-gray-600">|</span> */}
                       <a
@@ -475,7 +475,7 @@ export default function BookWithFilter() {
                         className="text-2xl text-medium py-3 flex justify-center items-center transition-all w-1/2  text-deep-purple-accent-400"
                       >
                         20
-                        {/* <i class="fa-solid fa-users"></i> */}
+                        {/* <i className="fa-solid fa-users"></i> */}
                       </a>
                     </div>
                   </div>
@@ -511,8 +511,8 @@ export default function BookWithFilter() {
                         href="#"
                         className="text-2xl py-3 flex justify-center items-center transition-all w-1/2 text-gray-500 hover:text-red-500"
                       >
-                        <i class="fa-regular fa-heart"></i>
-                        {/* <i class="fa-solid fa-heart"></i> */}
+                        <i className="fa-regular fa-heart"></i>
+                        {/* <i className="fa-solid fa-heart"></i> */}
                       </a>
                       {/* <span className="text-xl text-gray-600">|</span> */}
                       <a
@@ -520,7 +520,7 @@ export default function BookWithFilter() {
                         className="text-2xl text-medium py-3 flex justify-center items-center transition-all w-1/2  text-deep-purple-accent-400"
                       >
                         20
-                        {/* <i class="fa-solid fa-users"></i> */}
+                        {/* <i className="fa-solid fa-users"></i> */}
                       </a>
                     </div>
                   </div>
@@ -556,8 +556,8 @@ export default function BookWithFilter() {
                         href="#"
                         className="text-2xl py-3 flex justify-center items-center transition-all w-1/2 text-gray-500 hover:text-red-500"
                       >
-                        <i class="fa-regular fa-heart"></i>
-                        {/* <i class="fa-solid fa-heart"></i> */}
+                        <i className="fa-regular fa-heart"></i>
+                        {/* <i className="fa-solid fa-heart"></i> */}
                       </a>
                       {/* <span className="text-xl text-gray-600">|</span> */}
                       <a
@@ -565,7 +565,7 @@ export default function BookWithFilter() {
                         className="text-2xl text-medium py-3 flex justify-center items-center transition-all w-1/2  text-deep-purple-accent-400"
                       >
                         20
-                        {/* <i class="fa-solid fa-users"></i> */}
+                        {/* <i className="fa-solid fa-users"></i> */}
                       </a>
                     </div>
                   </div>

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { createRoot } from "react-dom/client";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+// import ReactDOM from "react-dom/client";
+import "./index.css";
+import {createRoot} from "react-dom/client";
+import { createBrowserRouter, Navigate, RouterProvider } from "react-router-dom";
 import Homepage from "./Pages/homepage.jsx";
 import Login from "./Pages/Auth/login.jsx";
 import Register from "./Pages/Auth/register.jsx";
@@ -11,8 +13,6 @@ import Error from "./Pages/Error/Error.jsx";
 import BookDetail from "./Pages/book/bookDetail.jsx";
 import axios from 'axios';
 import UserLayout from "./Layouts/UserLayout.jsx";
-import "./index.css";
-
 
 const root = createRoot(document.getElementById("root"));
 
@@ -27,6 +27,7 @@ const App = () => {
       const content = response.data;
       setUser(content.data);
       setAuth(content.status)
+      console.log('User:' + user);
     })();
   }, []);
 
@@ -59,25 +60,52 @@ const App = () => {
     }
   }
 
+  const router = createBrowserRouter([
+
+    // USER || USER || USER || USER || USER || USER || USER || USER
+    {
+      path: "/",
+      element: <UserLayout isActive="login" ><Homepage /></UserLayout>,
+      errorElement: <Error />,
+    },
+
+    {
+      path: "/book-detail/slug",
+      element: <BookDetail />,
+    },
+
+
+
+    // AUTH || AUTH || AUTH || AUTH || AUTH || AUTH
+    {
+      path: "/auth/login",
+      element: <GuestMiddleware element={<Login setAuth={setAuth} setUser={setUser} /> } />,
+    },
+    {
+      path: "/auth/register",
+      element: <GuestMiddleware element={<Register />} />,
+    },
+
+
+    // ADMIN || ADMIN || ADMIN || ADMIN || ADMIN || ADMIN
+    {
+      path: "/admin/dashboard",
+      element: <OnlyLibManager element={<AdminLayout setAuth={setAuth} setUser={setUser} bgMenu="dashboard" ><Dashboard/></AdminLayout>} /> ,
+    },
+    {
+      path: "/admin/book",
+      element: <OnlyLibManager element={<AdminLayout setAuth={setAuth} setUser={setUser} ><Book/></AdminLayout>} /> ,
+    },
+  ]);
+
   return (
     <React.StrictMode>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<UserLayout isActive="login" auth={auth} setAuth={setAuth} user={user} setUser={setUser} ><Homepage /></UserLayout>} />
-          <Route path="/book-detail/slug" element={<BookDetail />} />
-
-          <Route path="/auth/login" element={<GuestMiddleware element={<Login setAuth={setAuth} setUser={setUser} />} />} />
-          <Route path="/auth/register" element={<GuestMiddleware element={<Register />} />} />
-
-          <Route path="/admin/dashboard" element={<OnlyLibManager element={<AdminLayout setAuth={setAuth} setUser={setUser} bgMenu="dashboard"><Dashboard/></AdminLayout>} />} />
-          <Route path="/admin/book" element={<OnlyLibManager element={<AdminLayout setAuth={setAuth} setUser={setUser}><Book/></AdminLayout>} />} />
-        </Routes>
-      </BrowserRouter>
+      <RouterProvider router={router} />
     </React.StrictMode>
   );
 };
 
-// Render the app using createRoot
+// Render the app directly
 root.render(<App />);
 
 export default App;
