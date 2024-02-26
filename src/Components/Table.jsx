@@ -1,67 +1,62 @@
-import React from 'react'
-import AdminLayout from '../../../Layouts/AdminLayout'
-import Table from '../../../Components/Table'
+import React from "react";
 
-export default function Book() {
+export default function Table() {
   return (
-    <>
-    <div className="overflow-x-auto min-w-full py-8">
-      <table className="min-w-full  bg-white font-[sans-serif]">
-        <thead className="bg-gray-100 whitespace-nowrap">
+    <div class="overflow-x-auto min-w-full py-8">
+      <table class="min-w-full  bg-white font-[sans-serif]">
+        <thead class="bg-gray-100 whitespace-nowrap">
           <tr>
-            <th className="pl-6 w-8">
+            <th class="pl-6 w-8">
               No.
             </th>
-            <th className="px-6 py-3 text-left text-sm font-semibold text-black">
-              Book
+            <th class="px-6 py-3 text-left text-sm font-semibold text-black">
+              Name
             </th>
-            <th className="px-6 py-3 text-left text-sm font-semibold text-black">
-              Publisher
+            <th class="px-6 py-3 text-left text-sm font-semibold text-black">
+              Username
             </th>
-            <th className="px-6 py-3 text-left text-sm font-semibold text-black">
-              Page
+            <th class="px-6 py-3 text-left text-sm font-semibold text-black">
+              Phone
             </th>
-            <th className="px-6 py-3 text-left text-sm font-semibold text-black">
-              Stock / Loan
+            <th class="px-6 py-3 text-left text-sm font-semibold text-black">
+              Active
             </th>
-            <th className="px-6 py-3 text-left text-sm font-semibold text-black">
-              Categories
-            </th>
-            <th className="px-6 py-3 text-left text-sm font-semibold text-black">
+            <th class="px-6 py-3 text-left text-sm font-semibold text-black">
               Action
             </th>
           </tr>
         </thead>
-        <tbody className="whitespace-nowrap">
-          <tr className="">
-            <td className="pl-6 w-8">
+        <tbody class="whitespace-nowrap">
+          <tr class="">
+            <td class="pl-6 w-8">
               1
             </td>
-            <td className="px-6 py-3 text-sm">
-              <div className="flex items-center">
+            <td class="px-6 py-3 text-sm">
+              <div class="flex items-center cursor-pointer">
                 <img
-                  src="/assets/cover-404.jpg"
-                  className="min-w-12 max-w-12 w-12 rounded-lg shadow shrink-0"
+                  src="https://readymadeui.com/profile_5.webp"
+                  class="w-14 h-14 rounded-lg shadow shrink-0"
                 />
-                <div className="ml-4">
-                  <p className="text-sm text-black">Name of Book Lalalalala Lalalalala</p>
-                  <p className="text-sm text-gray-400">Author of Book</p>
-                  <button className="px-1 py-0.5 mt-1 text-xs text-deep-purple-accent-400 border border-deep-purple-accent-400">TYPE BOOK</button>
-                  <i className="fa-solid fa-star mx-1 text-xs text-orange-600"></i><span className='text-xs'>(4.9)</span>
+                <div class="ml-4">
+                  <p class="text-sm text-black">Alan Pratama Rusfi</p>
+                  <p class="text-xs text-gray-400">jennie@example.com</p>
+                  <button class="px-1 py-0.5 mt-1 text-xs text-deep-purple-accent-400 border border-deep-purple-accent-400">Admin</button>
                 </div>
               </div>
             </td>
-            <td className="px-6 py-3 text-sm">Publisher Lalalala Lala (Year)</td>
-            <td className="px-6 py-3 text-sm">20</td>
-            <td className="px-6 py-3 text-sm">18 / 2</td>
-            <td className="px-6 py-3">
-              <p className='max-w-36 text-sm text-wrap'>Horror, Comedy, Romance, Vanilla, Sclice of Life</p>
+            <td class="px-6 py-3 text-sm">lalan</td>
+            <td class="px-6 py-3 text-sm">085817000942</td>
+            <td class="px-6 py-3">
+              <label class="relative cursor-pointer">
+                <input type="checkbox" class="sr-only peer"  />
+                <div class="w-11 h-6 flex items-center bg-gray-300 rounded-full peer peer-checked:after:translate-x-full after:absolute after:left-[2px] peer-checked:after:border-white after:bg-white after:border after:border-gray-300 after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#007bff]"></div>
+              </label>
             </td>
-            <td className="px-6 py-3">
-              <button className="mr-4" title="Edit">
+            <td class="px-6 py-3">
+              <button class="mr-4" title="Edit">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="w-5 fill-blue-500 hover:fill-blue-700"
+                  class="w-5 fill-blue-500 hover:fill-blue-700"
                   viewBox="0 0 348.882 348.882"
                 >
                   <path
@@ -74,10 +69,10 @@ export default function Book() {
                   />
                 </svg>
               </button>
-              <button className="mr-4" title="Delete">
+              <button class="mr-4" title="Delete">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="w-5 fill-red-500 hover:fill-red-700"
+                  class="w-5 fill-red-500 hover:fill-red-700"
                   viewBox="0 0 24 24"
                 >
                   <path
@@ -94,24 +89,24 @@ export default function Book() {
           </tr>
         </tbody>
       </table>
-      <div className="md:flex mt-4 px-6">
-        <p className="text-sm text-gray-400 flex-1">
+      <div class="md:flex mt-4 px-6">
+        <p class="text-sm text-gray-400 flex-1">
           Showind 1 to 5 of 100 entries
         </p>
-        <div className="flex items-center max-md:mt-4">
-          <p className="text-sm text-gray-400">Display</p>
-          <select className="text-sm text-gray-400 border border-gray-400 rounded h-7 mx-4 outline-none">
+        <div class="flex items-center max-md:mt-4">
+          <p class="text-sm text-gray-400">Display</p>
+          <select class="text-sm text-gray-400 border border-gray-400 rounded h-7 mx-4 outline-none">
             <option>5</option>
             <option>10</option>
             <option>20</option>
             <option>50</option>
             <option>100</option>
           </select>
-          <ul className="flex space-x-1 ml-2">
-            <li className="flex items-center justify-center cursor-pointer bg-gray-300 w-7 h-7 rounded">
+          <ul class="flex space-x-1 ml-2">
+            <li class="flex items-center justify-center cursor-pointer bg-gray-300 w-7 h-7 rounded">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="w-3 fill-gray-500"
+                class="w-3 fill-gray-500"
                 viewBox="0 0 55.753 55.753"
               >
                 <path
@@ -120,22 +115,22 @@ export default function Book() {
                 />
               </svg>
             </li>
-            <li className="flex items-center justify-center cursor-pointer text-sm w-7 h-7 rounded">
+            <li class="flex items-center justify-center cursor-pointer text-sm w-7 h-7 rounded">
               1
             </li>
-            <li className="flex items-center justify-center cursor-pointer text-sm bg-[#007bff] text-white w-7 h-7 rounded">
+            <li class="flex items-center justify-center cursor-pointer text-sm bg-[#007bff] text-white w-7 h-7 rounded">
               2
             </li>
-            <li className="flex items-center justify-center cursor-pointer text-sm w-7 h-7 rounded">
+            <li class="flex items-center justify-center cursor-pointer text-sm w-7 h-7 rounded">
               3
             </li>
-            <li className="flex items-center justify-center cursor-pointer text-sm w-7 h-7 rounded">
+            <li class="flex items-center justify-center cursor-pointer text-sm w-7 h-7 rounded">
               4
             </li>
-            <li className="flex items-center justify-center cursor-pointer bg-gray-300 w-7 h-7 rounded">
+            <li class="flex items-center justify-center cursor-pointer bg-gray-300 w-7 h-7 rounded">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="w-3 fill-gray-500 rotate-180"
+                class="w-3 fill-gray-500 rotate-180"
                 viewBox="0 0 55.753 55.753"
               >
                 <path
@@ -148,6 +143,5 @@ export default function Book() {
         </div>
       </div>
     </div>
-    </>
-  )
+  );
 }

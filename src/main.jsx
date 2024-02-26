@@ -12,6 +12,7 @@ import BookDetail from "./Pages/book/bookDetail.jsx";
 import axios from 'axios';
 import UserLayout from "./Layouts/UserLayout.jsx";
 import "./index.css";
+import User from "./Pages/Admin/user.jsx";
 
 
 const root = createRoot(document.getElementById("root"));
@@ -70,7 +71,8 @@ const App = () => {
           <Route path="/auth/register" element={<GuestMiddleware element={<Register />} />} />
 
           <Route path="/admin/dashboard" element={<OnlyLibManager element={<AdminLayout setAuth={setAuth} setUser={setUser} bgMenu="dashboard"><Dashboard/></AdminLayout>} />} />
-          <Route path="/admin/book" element={<OnlyLibManager element={<AdminLayout setAuth={setAuth} setUser={setUser}><Book/></AdminLayout>} />} />
+          <Route path="/admin/books" element={<OnlyLibManager element={<AdminLayout setAuth={setAuth} setUser={setUser} bgMenu="books"><Book/></AdminLayout>} />} />
+          <Route path="/admin/users" element={<OnlyLibManager element={<AdminLayout setAuth={setAuth} setUser={setUser} bgMenu="users"><User/></AdminLayout>} />} />
         </Routes>
       </BrowserRouter>
     </React.StrictMode>

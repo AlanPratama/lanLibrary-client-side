@@ -103,11 +103,17 @@ export default function AdminLayout({ children, bgMenu, setAuth, setUser}) {
         </Link>
       </div>
 
-      <Link to={"/admin/book"}
-        className={`p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer ${bgMenu == 'book' ? 'bg-deep-purple-accent-400 text-white' : 'hover:text-deep-purple-400 text-gray-700'}`}
+      <Link to={"/admin/books"}
+        className={`p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer ${bgMenu == 'books' ? 'bg-deep-purple-accent-400 text-white' : 'hover:text-deep-purple-400 text-gray-700'}`}
       >
         <i className="fa-solid fa-book"></i>
         <span className="text-[15px] ml-4 font-bold">Book</span>
+      </Link>
+      <Link to={"/admin/users"}
+        className={`p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer ${bgMenu == 'users' ? 'bg-deep-purple-accent-400 text-white' : 'hover:text-deep-purple-400 text-gray-700'}`}
+      >
+        <i className="fa-solid fa-book"></i>
+        <span className="text-[15px] ml-4 font-bold">User</span>
       </Link>
       <div className="my-4 bg-gray-600 h-[1px]"></div>
 
