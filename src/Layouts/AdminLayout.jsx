@@ -125,7 +125,7 @@ export default function AdminLayout({ children, bgMenu, setAuth, setUser}) {
       </div>
     </div>
 
-      <div className={`${sidebar ? 'ml-2' :  'ml-[250px]'} pr-4 md:mt-1 mt-10`}>
+      <div className={`${sidebar ? 'ml-2' :  'ml-[250px]'} pr-4 md:mt-0 mt-10`}>
         {children}
       </div>
     </>

@@ -12,7 +12,7 @@ import BookDetail from "./Pages/book/bookDetail.jsx";
 import axios from 'axios';
 import UserLayout from "./Layouts/UserLayout.jsx";
 import "./index.css";
-import User from "./Pages/Admin/user.jsx";
+import User from "./Pages/Admin/User/user.jsx";
 
 
 const root = createRoot(document.getElementById("root"));

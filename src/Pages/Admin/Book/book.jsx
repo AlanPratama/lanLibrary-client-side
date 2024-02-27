@@ -1,153 +1,391 @@
-import React from 'react'
-import AdminLayout from '../../../Layouts/AdminLayout'
-import Table from '../../../Components/Table'
-
+import React, { useEffect, useState } from "react";
+import AdminLayout from "../../../Layouts/AdminLayout";
+import Table from "../../../Components/Table";
+import axios from "axios";
+import TableBook from "./Table";
+import "../../../index.css";
 export default function Book() {
+  const [books, setBooks] = useState();
+
+  const [addBookModal, setAddBookModal] = useState(false);
+  const [getType, setGetType] = useState()
+  const [getWriter, setGetWriter] = useState()
+  const [getCategories, setGetCategories] = useState()
+
+
+  const handleAddBookModal = () => {
+    if (!addBookModal) {
+      setAddBookModal(true)
+    } else {
+      setAddBookModal(false)
+    }
+  }
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8000/api/book",
+          {},
+          {
+            withCredentials: true,
+          }
+        );
+
+        setBooks(response.data.data);
+
+        const resSD = await axios.get('http://localhost:8000/api/side-dish-book', {}, {
+          withCredentials: true,
+        })
+        // console.log(resSD.data);
+        setGetWriter(resSD.data.writers)
+        setGetType(resSD.data.types)
+        setGetCategories(resSD.data.categories)
+        console.log(getWriter, getType, getCategories);
+
+        
+      } catch (error) {
+        console.error(error);
+      }
+    })();
+  }, []);
+
+
+
+  const [writer, setWriter] = useState("");
+  const [type, setType] = useState("");
+  const [category, setCategory] = useState("");
+  const [totalBook, setTotalBook] = useState("");
+  const [title, setTitle] = useState("");
+  const [publisher, setPublisher] = useState("");
+  const [description, setDescription] = useState("");
+  const [year, setYear] = useState("");
+  const [page, setPage] = useState("");
+  const [cover, setCover] = useState("");
+
+  const addBookSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await axios.post(
+        "http://localhost:8000/api/libManager/book",
+        {
+          type_id: type,
+          writer_id: writer,
+          total_book: totalBook,
+          title: title,
+          publisher: publisher,
+          description: description,
+          year: year,
+          page: page,
+          cover: cover,
+          categories: category,
+        },
+        {
+          withCredentials: true,
+        }
+      );
+
+      console.log(response);
+      
+      if (response.data.status == 'success') {
+        const res = await axios.get(
+          "http://localhost:8000/api/book",
+          {},
+          {
+            withCredentials: true,
+          }
+        );
+        setBooks(res.data.data);
+        setType("")
+        setCategory("")
+        setTotalBook("")
+        setTitle("")
+        setPublisher("")
+        setDescription("")
+        setYear("")
+        setPage("")
+        setCover("")
+        setAddBookModal(false)
+      }
+
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <>
-    <div className="overflow-x-auto min-w-full py-8">
-      <table className="min-w-full  bg-white font-[sans-serif]">
-        <thead className="bg-gray-100 whitespace-nowrap">
-          <tr>
-            <th className="pl-6 w-8">
-              No.
-            </th>
-            <th className="px-6 py-3 text-left text-sm font-semibold text-black">
-              Book
-            </th>
-            <th className="px-6 py-3 text-left text-sm font-semibold text-black">
-              Publisher
-            </th>
-            <th className="px-6 py-3 text-left text-sm font-semibold text-black">
-              Page
-            </th>
-            <th className="px-6 py-3 text-left text-sm font-semibold text-black">
-              Stock / Loan
-            </th>
-            <th className="px-6 py-3 text-left text-sm font-semibold text-black">
-              Categories
-            </th>
-            <th className="px-6 py-3 text-left text-sm font-semibold text-black">
-              Action
-            </th>
-          </tr>
-        </thead>
-        <tbody className="whitespace-nowrap">
-          <tr className="">
-            <td className="pl-6 w-8">
-              1
-            </td>
-            <td className="px-6 py-3 text-sm">
-              <div className="flex items-center">
-                <img
-                  src="/assets/cover-404.jpg"
-                  className="min-w-12 max-w-12 w-12 rounded-lg shadow shrink-0"
-                />
-                <div className="ml-4">
-                  <p className="text-sm text-black">Name of Book Lalalalala Lalalalala</p>
-                  <p className="text-sm text-gray-400">Author of Book</p>
-                  <button className="px-1 py-0.5 mt-1 text-xs text-deep-purple-accent-400 border border-deep-purple-accent-400">TYPE BOOK</button>
-                  <i className="fa-solid fa-star mx-1 text-xs text-orange-600"></i><span className='text-xs'>(4.9)</span>
+      <div
+        className={`${
+          !addBookModal ? "hidden" : ""
+        }  l transition-all min-h-screen overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full`}
+      >
+        <div className="relative w-full flex justify-center items-center h-full">
+          <div className="max-w-4xl max-h-full rounded-lg bg-white p-8 shadow-lg lg:col-span-3 lg:p-12">
+            <form className="space-y-4" onSubmit={addBookSubmit}>
+              <div className="grid grid-cols-1 gap-4 text-center sm:grid-cols-3">
+                <div>
+                  <label className="sr-only" htmlFor="title">
+                    Title
+                  </label>
+                  <input
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    className="w-full rounded-lg border border-gray-300 p-3 text-sm"
+                    placeholder="Book Title"
+                    type="text"
+                    id="title"
+                  />
+                </div>
+                <div>
+                  <label className="sr-only" htmlFor="publisher">
+                    Publisher
+                  </label>
+                  <input
+                    value={publisher}
+                    onChange={(e) => setPublisher(e.target.value)}
+                    className="w-full rounded-lg border border-gray-300 p-3 text-sm"
+                    placeholder="publisher"
+                    type="text"
+                    id="publisher"
+                  />
+                </div>
+                <div>
+                  <label className="sr-only" htmlFor="year">
+                    Year
+                  </label>
+                  <input
+                    value={year}
+                    onChange={(e) => setYear(e.target.value)}
+                    className="w-full rounded-lg border border-gray-300 p-3 text-sm"
+                    placeholder="year"
+                    type="text"
+                    id="year"
+                  />
                 </div>
               </div>
-            </td>
-            <td className="px-6 py-3 text-sm">Publisher Lalalala Lala (Year)</td>
-            <td className="px-6 py-3 text-sm">20</td>
-            <td className="px-6 py-3 text-sm">18 / 2</td>
-            <td className="px-6 py-3">
-              <p className='max-w-36 text-sm text-wrap'>Horror, Comedy, Romance, Vanilla, Sclice of Life</p>
-            </td>
-            <td className="px-6 py-3">
-              <button className="mr-4" title="Edit">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="w-5 fill-blue-500 hover:fill-blue-700"
-                  viewBox="0 0 348.882 348.882"
+
+              <div className="grid grid-cols-1 gap-4 text-center sm:grid-cols-3">
+                <div>
+                  <label className="sr-only" htmlFor="email">
+                    Writer
+                  </label>
+                  <select
+                    name="writer"
+                    onChange={(e) => setWriter(e.target.value)}
+                    id="writer"
+                    className="bg-white w-full rounded-lg border border-gray-300 p-3 text-sm"
+                  >
+                    <option disabled selected>
+                      Select Writer
+                    </option>
+                    {
+                      getWriter ? 
+                      getWriter.map((writer, i) => {
+                        return (
+                          <>
+                            <option key={i} value={writer.id}>{writer.name}</option>
+                          </>
+                        )
+                      })
+                      : ''
+                    }
+                  </select>
+                </div>
+
+                <div>
+                  <label className="sr-only" htmlFor="type_id">
+                    Type Book
+                  </label>
+                  <select
+                    onChange={(e) => setType(e.target.value)}
+                    name="type_id"
+                    id="type_id"
+                    className="bg-white w-full rounded-lg border border-gray-300 p-3 text-sm"
+                  >
+                    <option disabled selected>
+                      Select Type
+                    </option>
+                    {
+                      getType ? 
+                      getType.map((type, i) => {
+                        return (
+                          <>
+                            <option key={i} value={type.id}>{type.name}</option>
+                          </>
+                        )
+                      })
+                      : ''
+                    }
+                  </select>
+                </div>
+
+                <div>
+                  <label className="sr-only" htmlFor="categories">
+                    Categories
+                  </label>
+                  <select
+                    onChange={(e) => setCategory(e.target.value)}
+                    name="categories"
+                    id="categories"
+                    className="bg-white w-full rounded-lg border border-gray-300 p-3 text-sm"
+                  >
+                    <option disabled selected>
+                      Select Categories
+                    </option>
+                    {
+                      getCategories ? getCategories.map((category, i) => {
+                        return (
+                          <>
+                            <option key={i} value={category.id}>{category.name}</option>
+                          </>
+                        )
+                      })
+                      : ''
+                    }
+                  </select>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <div>
+                  <label className="sr-only" htmlFor="description">
+                    Description
+                  </label>
+
+                  <textarea
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                    className="w-full rounded-lg border border-gray-300 p-3 text-sm"
+                    placeholder="description"
+                    rows="7"
+                    id="description"
+                  ></textarea>
+                </div>
+
+                <div>
+                  <label className="sr-only" htmlFor="page">
+                    Book Page
+                  </label>
+                  <input
+                    value={page}
+                    onChange={(e) => setPage(e.target.value)}
+                    className="w-full rounded-lg border border-gray-300 p-3 text-sm mb-3"
+                    placeholder="Book Page"
+                    type="number"
+                    id="page"
+                  />
+
+                  <label className="sr-only" htmlFor="total_book">
+                    Total Book
+                  </label>
+                  <input
+                    value={totalBook}
+                    onChange={(e) => setTotalBook(e.target.value)}
+                    className="w-full rounded-lg border border-gray-300 p-3 text-sm mb-3"
+                    placeholder="Total Book"
+                    type="number"
+                    id="total_book"
+                  />
+
+                  <label className="sr-only" htmlFor="cover">
+                    Cover Book
+                  </label>
+                  <input
+                    value={cover}
+                    onChange={(e) => setCover(e.target.value)}
+                    className="w-full rounded-lg border border-gray-300 p-3 text-sm mb-3"
+                    type="file"
+                    accept="image/*"
+                    id="cover"
+                  />
+                </div>
+              </div>
+
+              <div className="mt-4">
+                <button
+                  type="submit"
+                  className="inline-block w-full rounded bg-deep-purple-accent-400 px-3 py-1.5 font-medium text-white sm:w-auto"
                 >
-                  <path
-                    d="m333.988 11.758-.42-.383A43.363 43.363 0 0 0 304.258 0a43.579 43.579 0 0 0-32.104 14.153L116.803 184.231a14.993 14.993 0 0 0-3.154 5.37l-18.267 54.762c-2.112 6.331-1.052 13.333 2.835 18.729 3.918 5.438 10.23 8.685 16.886 8.685h.001c2.879 0 5.693-.592 8.362-1.76l52.89-23.138a14.985 14.985 0 0 0 5.063-3.626L336.771 73.176c16.166-17.697 14.919-45.247-2.783-61.418zM130.381 234.247l10.719-32.134.904-.99 20.316 18.556-.904.99-31.035 13.578zm184.24-181.304L182.553 197.53l-20.316-18.556L294.305 34.386c2.583-2.828 6.118-4.386 9.954-4.386 3.365 0 6.588 1.252 9.082 3.53l.419.383c5.484 5.009 5.87 13.546.861 19.03z"
-                    data-original="#000000"
-                  />
-                  <path
-                    d="M303.85 138.388c-8.284 0-15 6.716-15 15v127.347c0 21.034-17.113 38.147-38.147 38.147H68.904c-21.035 0-38.147-17.113-38.147-38.147V100.413c0-21.034 17.113-38.147 38.147-38.147h131.587c8.284 0 15-6.716 15-15s-6.716-15-15-15H68.904C31.327 32.266.757 62.837.757 100.413v180.321c0 37.576 30.571 68.147 68.147 68.147h181.798c37.576 0 68.147-30.571 68.147-68.147V153.388c.001-8.284-6.715-15-14.999-15z"
-                    data-original="#000000"
-                  />
-                </svg>
-              </button>
-              <button className="mr-4" title="Delete">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="w-5 fill-red-500 hover:fill-red-700"
-                  viewBox="0 0 24 24"
+                  Submit
+                </button>
+                <button
+                  onClick={handleAddBookModal}
+                  type="button"
+                  className="inline-block w-full rounded bg-white border border-deep-purple-accent-400 px-3 py-1.5 font-medium text-deep-purple-accent-400 ml-2 sm:w-auto"
                 >
-                  <path
-                    d="M19 7a1 1 0 0 0-1 1v11.191A1.92 1.92 0 0 1 15.99 21H8.01A1.92 1.92 0 0 1 6 19.191V8a1 1 0 0 0-2 0v11.191A3.918 3.918 0 0 0 8.01 23h7.98A3.918 3.918 0 0 0 20 19.191V8a1 1 0 0 0-1-1Zm1-3h-4V2a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v2H4a1 1 0 0 0 0 2h16a1 1 0 0 0 0-2ZM10 4V3h4v1Z"
-                    data-original="#000000"
-                  />
-                  <path
-                    d="M11 17v-7a1 1 0 0 0-2 0v7a1 1 0 0 0 2 0Zm4 0v-7a1 1 0 0 0-2 0v7a1 1 0 0 0 2 0Z"
-                    data-original="#000000"
-                  />
-                </svg>
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <div className="md:flex mt-4 px-6">
-        <p className="text-sm text-gray-400 flex-1">
-          Showind 1 to 5 of 100 entries
-        </p>
-        <div className="flex items-center max-md:mt-4">
-          <p className="text-sm text-gray-400">Display</p>
-          <select className="text-sm text-gray-400 border border-gray-400 rounded h-7 mx-4 outline-none">
-            <option>5</option>
-            <option>10</option>
-            <option>20</option>
-            <option>50</option>
-            <option>100</option>
-          </select>
-          <ul className="flex space-x-1 ml-2">
-            <li className="flex items-center justify-center cursor-pointer bg-gray-300 w-7 h-7 rounded">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="w-3 fill-gray-500"
-                viewBox="0 0 55.753 55.753"
-              >
-                <path
-                  d="M12.745 23.915c.283-.282.59-.52.913-.727L35.266 1.581a5.4 5.4 0 0 1 7.637 7.638L24.294 27.828l18.705 18.706a5.4 5.4 0 0 1-7.636 7.637L13.658 32.464a5.367 5.367 0 0 1-.913-.727 5.367 5.367 0 0 1-1.572-3.911 5.369 5.369 0 0 1 1.572-3.911z"
-                  data-original="#000000"
-                />
-              </svg>
-            </li>
-            <li className="flex items-center justify-center cursor-pointer text-sm w-7 h-7 rounded">
-              1
-            </li>
-            <li className="flex items-center justify-center cursor-pointer text-sm bg-[#007bff] text-white w-7 h-7 rounded">
-              2
-            </li>
-            <li className="flex items-center justify-center cursor-pointer text-sm w-7 h-7 rounded">
-              3
-            </li>
-            <li className="flex items-center justify-center cursor-pointer text-sm w-7 h-7 rounded">
-              4
-            </li>
-            <li className="flex items-center justify-center cursor-pointer bg-gray-300 w-7 h-7 rounded">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="w-3 fill-gray-500 rotate-180"
-                viewBox="0 0 55.753 55.753"
-              >
-                <path
-                  d="M12.745 23.915c.283-.282.59-.52.913-.727L35.266 1.581a5.4 5.4 0 0 1 7.637 7.638L24.294 27.828l18.705 18.706a5.4 5.4 0 0 1-7.636 7.637L13.658 32.464a5.367 5.367 0 0 1-.913-.727 5.367 5.367 0 0 1-1.572-3.911 5.369 5.369 0 0 1 1.572-3.911z"
-                  data-original="#000000"
-                />
-              </svg>
-            </li>
-          </ul>
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
-    </div>
+
+      <button
+        onClick={handleAddBookModal}
+        type="button"
+        className="inline-block w-full rounded bg-deep-purple-accent-400 px-3 py-1.5 font-medium text-white sm:w-auto"
+      >
+        Add Book
+      </button>
+      <div className="overflow-x-auto min-w-full pb-8 pt-2">
+        <TableBook books={books} />
+        <div className="md:flex mt-4 px-6">
+          <p className="text-sm text-gray-400 flex-1">
+            Showind 1 to 5 of 100 entries
+          </p>
+          <div className="flex items-center max-md:mt-4">
+            <p className="text-sm text-gray-400">Display</p>
+            <select className="text-sm text-gray-400 border border-gray-400 rounded h-7 mx-4 outline-none">
+              <option>5</option>
+              <option>10</option>
+              <option>20</option>
+              <option>50</option>
+              <option>100</option>
+            </select>
+            <ul className="flex space-x-1 ml-2">
+              <li className="flex items-center justify-center cursor-pointer bg-gray-300 w-7 h-7 rounded">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-3 fill-gray-500"
+                  viewBox="0 0 55.753 55.753"
+                >
+                  <path
+                    d="M12.745 23.915c.283-.282.59-.52.913-.727L35.266 1.581a5.4 5.4 0 0 1 7.637 7.638L24.294 27.828l18.705 18.706a5.4 5.4 0 0 1-7.636 7.637L13.658 32.464a5.367 5.367 0 0 1-.913-.727 5.367 5.367 0 0 1-1.572-3.911 5.369 5.369 0 0 1 1.572-3.911z"
+                    data-original="#000000"
+                  />
+                </svg>
+              </li>
+              <li className="flex items-center justify-center cursor-pointer text-sm w-7 h-7 rounded">
+                1
+              </li>
+              <li className="flex items-center justify-center cursor-pointer text-sm bg-[#007bff] text-white w-7 h-7 rounded">
+                2
+              </li>
+              <li className="flex items-center justify-center cursor-pointer text-sm w-7 h-7 rounded">
+                3
+              </li>
+              <li className="flex items-center justify-center cursor-pointer text-sm w-7 h-7 rounded">
+                4
+              </li>
+              <li className="flex items-center justify-center cursor-pointer bg-gray-300 w-7 h-7 rounded">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-3 fill-gray-500 rotate-180"
+                  viewBox="0 0 55.753 55.753"
+                >
+                  <path
+                    d="M12.745 23.915c.283-.282.59-.52.913-.727L35.266 1.581a5.4 5.4 0 0 1 7.637 7.638L24.294 27.828l18.705 18.706a5.4 5.4 0 0 1-7.636 7.637L13.658 32.464a5.367 5.367 0 0 1-.913-.727 5.367 5.367 0 0 1-1.572-3.911 5.369 5.369 0 0 1 1.572-3.911z"
+                    data-original="#000000"
+                  />
+                </svg>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
     </>
-  )
+  );
 }
