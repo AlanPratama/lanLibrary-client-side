@@ -39,9 +39,9 @@ export default function LoginForm({ setAuth, setUser }) {
           setAuth(content.status)
           setUser(user2);
           if (user2.role == "admin") {
-            navigate("/admin/dashboard", { state: { notif: true } });
+            navigate("/admin/dashboard", { state: { notif: 'LOGIN BERHASIL' } });
           } else {
-            navigate("/", { state: { notif: true } });
+            navigate("/", { state: { notif: 'LOGIN BERHASIL' } });
           }
         } else {
           const logout = await axios.post('http://localhost:8000/api/auth/logout', {}, {
@@ -53,7 +53,7 @@ export default function LoginForm({ setAuth, setUser }) {
             setUser("")
             setAuth("unauthorized")
             console.log('not verified');
-            toast.success("Akun Kamu Belum Disetujui Admin!", {
+            toast.info("Akun Kamu Belum Disetujui!", {
               position: "top-center",
             })
             return <Navigate to={'/auth/login'}/>

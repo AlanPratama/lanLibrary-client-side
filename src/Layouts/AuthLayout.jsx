@@ -5,7 +5,7 @@ export default function AuthLayout({ children }) {
   return (
     <div className="relative min-h-screen h-auto">
       <img
-        src="https://images.pexels.com/photos/3747463/pexels-photo-3747463.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=2&amp;h=750&amp;w=1260"
+        src="/assets/wall-library.jpg"
         className="absolute inset-0 object-cover w-full h-full"
         alt=""
       />

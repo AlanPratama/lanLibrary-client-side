@@ -1,9 +1,24 @@
 import React, { useEffect, useState } from "react";
-import AdminLayout from "../../Layouts/AdminLayout";
-export default function Dashboard({ }) {
+import { useLocation } from "react-router-dom";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+
+export default function Dashboard() {
   
+  const location = useLocation()
+
+  useEffect(() => {
+    if (location.state.notif) {
+      toast.success(location.state.notif, {
+        position: "top-center"
+      })
+    }
+  }, [location.state.notif])
+
   return (
-      <div className="font-[sans-serif] text-[#fff] mt-8">
+    <div className="font-[sans-serif] text-[#fff] mt-8">
+        <ToastContainer/>
         <div className="grid lg:grid-cols-4 sm:grid-cols-2 gap-x-2 gap-y-12">
           <div className="text-center py-6 bg-blue-600 rounded-lg shadow">
             <svg
