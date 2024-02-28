@@ -1,5 +1,9 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import axios from 'axios'
+
 
 export default function LoginForm({ setAuth, setUser }) {
 
@@ -31,12 +35,29 @@ export default function LoginForm({ setAuth, setUser }) {
       if (content.status == "error") {
         setMessage(content.message);
       } else {
-        setAuth(content.status)
-        setUser(user2);
-        if (user2.role == "admin") {
-          navigate("/admin/dashboard");
+        if (user2.verified == 'Verified') {
+          setAuth(content.status)
+          setUser(user2);
+          if (user2.role == "admin") {
+            navigate("/admin/dashboard", { state: { notif: true } });
+          } else {
+            navigate("/", { state: { notif: true } });
+          }
         } else {
-          navigate("/");
+          const logout = await axios.post('http://localhost:8000/api/auth/logout', {}, {
+            withCredentials: true,
+          })
+          const status = logout.status
+          
+          if (status == 200) {
+            setUser("")
+            setAuth("unauthorized")
+            console.log('not verified');
+            toast.success("Akun Kamu Belum Disetujui Admin!", {
+              position: "top-center",
+            })
+            return <Navigate to={'/auth/login'}/>
+          }
         }
       }
     } catch (error) {
@@ -70,6 +91,7 @@ export default function LoginForm({ setAuth, setUser }) {
 
   return (
     <div className="w-full max-w-xl xl:px-8 xl:w-5/12">
+      <ToastContainer/>
       <div className="bg-white rounded shadow-2xl p-7 sm:p-10">
         <h3 className="mb-4 text-xl font-semibold sm:text-center sm:mb-6 sm:text-2xl">
           Welcome Back!

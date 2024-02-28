@@ -160,7 +160,7 @@ export default function BookDetail() {
                   <div className="grid md:grid-cols-2 md:gap-6 max-md:gap-10 max-w-6xl mx-auto">
                     <div className="mb-16 h-auto py-8 px-4 lg:px-8 rounded-md mx-auto bg-white shadow-xl relative">
                       <img
-                        src="https://readymadeui.com/profile_2.webp"
+                        src="/assets/formalRedBg.png"
                         className="w-16 h-16 rounded-lg absolute right-0 left-0 border-4 border-white shadow-xl mx-auto -top-7"
                       />
                       <div className="flex space-x-1 mt-4">
@@ -187,7 +187,7 @@ export default function BookDetail() {
 
                     <div className="mb-16 h-auto py-8 px-4 lg:px-8 rounded-md mx-auto bg-white shadow-xl relative">
                       <img
-                        src="https://readymadeui.com/profile_2.webp"
+                        src="/assets/formalRedBg.png"
                         className="w-16 h-16 rounded-lg absolute right-0 left-0 border-4 border-white shadow-xl mx-auto -top-7"
                       />
                       <div className="flex space-x-1 mt-4">
@@ -214,7 +214,7 @@ export default function BookDetail() {
 
                     <div className="mb-16 h-auto py-8 px-4 lg:px-8 rounded-md mx-auto bg-white shadow-xl relative">
                       <img
-                        src="https://readymadeui.com/profile_2.webp"
+                        src="/assets/formalRedBg.png"
                         className="w-16 h-16 rounded-lg absolute right-0 left-0 border-4 border-white shadow-xl mx-auto -top-7"
                       />
                       <div className="flex space-x-1 mt-4">
@@ -241,7 +241,7 @@ export default function BookDetail() {
 
                     <div className="mb-16 h-auto py-8 px-4 lg:px-8 rounded-md mx-auto bg-white shadow-xl relative">
                       <img
-                        src="https://readymadeui.com/profile_2.webp"
+                        src="/assets/formalRedBg.png"
                         className="w-16 h-16 rounded-lg absolute right-0 left-0 border-4 border-white shadow-xl mx-auto -top-7"
                       />
                       <div className="flex space-x-1 mt-4">
@@ -268,7 +268,7 @@ export default function BookDetail() {
 
                     <div className="mb-16 h-auto py-8 px-4 lg:px-8 rounded-md mx-auto bg-white shadow-xl relative">
                       <img
-                        src="https://readymadeui.com/profile_2.webp"
+                        src="/assets/formalRedBg.png"
                         className="w-16 h-16 rounded-lg absolute right-0 left-0 border-4 border-white shadow-xl mx-auto -top-7"
                       />
                       <div className="flex space-x-1 mt-4">
@@ -356,7 +356,7 @@ export default function BookDetail() {
                   <div className="grid md:grid-cols-2 md:gap-6 max-md:gap-10 max-w-6xl mx-auto">
                     <div className="mb-16 h-auto py-8 px-4 lg:px-8 rounded-md mx-auto bg-white shadow-xl relative">
                       <img
-                        src="https://readymadeui.com/profile_2.webp"
+                        src="/assets/formalRedBg.png"
                         className="w-16 h-16 rounded-lg absolute right-0 left-0 border-4 border-white shadow-xl mx-auto -top-7"
                       />
                       <div className="flex space-x-1 mt-4">
@@ -383,7 +383,7 @@ export default function BookDetail() {
 
                     <div className="mb-16 h-auto py-8 px-4 lg:px-8 rounded-md mx-auto bg-white shadow-xl relative">
                       <img
-                        src="https://readymadeui.com/profile_2.webp"
+                        src="/assets/formalRedBg.png"
                         className="w-16 h-16 rounded-lg absolute right-0 left-0 border-4 border-white shadow-xl mx-auto -top-7"
                       />
                       <div className="flex space-x-1 mt-4">
@@ -410,7 +410,7 @@ export default function BookDetail() {
 
                     <div className="mb-16 h-auto py-8 px-4 lg:px-8 rounded-md mx-auto bg-white shadow-xl relative">
                       <img
-                        src="https://readymadeui.com/profile_2.webp"
+                        src="/assets/formalRedBg.png"
                         className="w-16 h-16 rounded-lg absolute right-0 left-0 border-4 border-white shadow-xl mx-auto -top-7"
                       />
                       <div className="flex space-x-1 mt-4">
@@ -437,7 +437,7 @@ export default function BookDetail() {
 
                     <div className="mb-16 h-auto py-8 px-4 lg:px-8 rounded-md mx-auto bg-white shadow-xl relative">
                       <img
-                        src="https://readymadeui.com/profile_2.webp"
+                        src="/assets/formalRedBg.png"
                         className="w-16 h-16 rounded-lg absolute right-0 left-0 border-4 border-white shadow-xl mx-auto -top-7"
                       />
                       <div className="flex space-x-1 mt-4">
@@ -464,7 +464,7 @@ export default function BookDetail() {
 
                     <div className="mb-16 h-auto py-8 px-4 lg:px-8 rounded-md mx-auto bg-white shadow-xl relative">
                       <img
-                        src="https://readymadeui.com/profile_2.webp"
+                        src="/assets/formalRedBg.png"
                         className="w-16 h-16 rounded-lg absolute right-0 left-0 border-4 border-white shadow-xl mx-auto -top-7"
                       />
                       <div className="flex space-x-1 mt-4">
