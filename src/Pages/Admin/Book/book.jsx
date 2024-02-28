@@ -4,22 +4,26 @@ import Table from "../../../Components/Table";
 import axios from "axios";
 import TableBook from "./Table";
 import "../../../index.css";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Select from "react-select";
+import makeAnimated from "react-select/animated";
+
 export default function Book() {
   const [books, setBooks] = useState();
 
   const [addBookModal, setAddBookModal] = useState(false);
-  const [getType, setGetType] = useState()
-  const [getWriter, setGetWriter] = useState()
-  const [getCategories, setGetCategories] = useState()
-
+  const [getType, setGetType] = useState();
+  const [getWriter, setGetWriter] = useState();
+  const [getCategories, setGetCategories] = useState();
 
   const handleAddBookModal = () => {
     if (!addBookModal) {
-      setAddBookModal(true)
+      setAddBookModal(true);
     } else {
-      setAddBookModal(false)
+      setAddBookModal(false);
     }
-  }
+  };
 
   useEffect(() => {
     (async () => {
@@ -34,23 +38,21 @@ export default function Book() {
 
         setBooks(response.data.data);
 
-        const resSD = await axios.get('http://localhost:8000/api/side-dish-book', {}, {
-          withCredentials: true,
-        })
-        // console.log(resSD.data);
-        setGetWriter(resSD.data.writers)
-        setGetType(resSD.data.types)
-        setGetCategories(resSD.data.categories)
-        console.log(getWriter, getType, getCategories);
-
-        
+        const resSD = await axios.get(
+          "http://localhost:8000/api/side-dish-book",
+          {},
+          {
+            withCredentials: true,
+          }
+        );
+        setGetWriter(resSD.data.writers);
+        setGetType(resSD.data.types);
+        setGetCategories(resSD.data.categories);
       } catch (error) {
         console.error(error);
       }
     })();
   }, []);
-
-
 
   const [writer, setWriter] = useState("");
   const [type, setType] = useState("");
@@ -67,28 +69,32 @@ export default function Book() {
     e.preventDefault();
 
     try {
+      const formAdd = new FormData();
+      formAdd.append("type_id", type);
+      formAdd.append("writer_id", writer);
+      formAdd.append("total_book", totalBook);
+      formAdd.append("title", title);
+      formAdd.append("publisher", publisher);
+      formAdd.append("description", description);
+      formAdd.append("year", year);
+      formAdd.append("page", page);
+      formAdd.append("cover", cover);
+      category.forEach(cat => {
+        formAdd.append("categories[]", cat.value);
+      });
+      console.log(category);
       const response = await axios.post(
         "http://localhost:8000/api/libManager/book",
+        formAdd,
         {
-          type_id: type,
-          writer_id: writer,
-          total_book: totalBook,
-          title: title,
-          publisher: publisher,
-          description: description,
-          year: year,
-          page: page,
-          cover: cover,
-          categories: category,
-        },
-        {
+          headers: { "Content-Type": "multipart/form-data" },
           withCredentials: true,
         }
       );
 
-      console.log(response);
-      
-      if (response.data.status == 'success') {
+      // console.log(response);
+
+      if (response.data.status == "success") {
         const res = await axios.get(
           "http://localhost:8000/api/book",
           {},
@@ -97,29 +103,39 @@ export default function Book() {
           }
         );
         setBooks(res.data.data);
-        setType("")
-        setCategory("")
-        setTotalBook("")
-        setTitle("")
-        setPublisher("")
-        setDescription("")
-        setYear("")
-        setPage("")
-        setCover("")
-        setAddBookModal(false)
+        setType("");
+        setCategory("");
+        setTotalBook("");
+        setTitle("");
+        setPublisher("");
+        setDescription("");
+        setYear("");
+        setPage("");
+        setCover("");
+        setAddBookModal(false);
+        toast.success(response.data.message, {
+          position: "top-center",
+        });
       }
-
     } catch (error) {
       console.error(error);
     }
   };
 
+  const options = getCategories.map((cat, i) => {
+    return { value: cat.id, label: cat.name };
+  });
+
+
+  const animatedComponents = makeAnimated();
+
   return (
     <>
+      <ToastContainer />
       <div
         className={`${
           !addBookModal ? "hidden" : ""
-        }  l transition-all min-h-screen overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full`}
+        }  l transition-all min-h-screen h-auto overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 max-h-full`}
       >
         <div className="relative w-full flex justify-center items-center h-full">
           <div className="max-w-4xl max-h-full rounded-lg bg-white p-8 shadow-lg lg:col-span-3 lg:p-12">
@@ -180,17 +196,17 @@ export default function Book() {
                     <option disabled selected>
                       Select Writer
                     </option>
-                    {
-                      getWriter ? 
-                      getWriter.map((writer, i) => {
-                        return (
-                          <>
-                            <option key={i} value={writer.id}>{writer.name}</option>
-                          </>
-                        )
-                      })
-                      : ''
-                    }
+                    {getWriter
+                      ? getWriter.map((writer, i) => {
+                          return (
+                            <>
+                              <option key={i} value={writer.id}>
+                                {writer.name}
+                              </option>
+                            </>
+                          );
+                        })
+                      : ""}
                   </select>
                 </div>
 
@@ -207,17 +223,17 @@ export default function Book() {
                     <option disabled selected>
                       Select Type
                     </option>
-                    {
-                      getType ? 
-                      getType.map((type, i) => {
-                        return (
-                          <>
-                            <option key={i} value={type.id}>{type.name}</option>
-                          </>
-                        )
-                      })
-                      : ''
-                    }
+                    {getType
+                      ? getType.map((type, i) => {
+                          return (
+                            <>
+                              <option key={i} value={type.id}>
+                                {type.name}
+                              </option>
+                            </>
+                          );
+                        })
+                      : ""}
                   </select>
                 </div>
 
@@ -225,46 +241,37 @@ export default function Book() {
                   <label className="sr-only" htmlFor="categories">
                     Categories
                   </label>
-                  <select
-                    onChange={(e) => setCategory(e.target.value)}
+                  <Select
+                    onChange={(selectedOptions) => setCategory(selectedOptions)}
+                    // onChange={(e) => setCategory(e.target.value)}
+                    options={options}
+                    closeMenuOnSelect={false}
+                    components={animatedComponents}
+                    isMulti
                     name="categories"
                     id="categories"
-                    className="bg-white w-full rounded-lg border border-gray-300 p-3 text-sm"
-                  >
-                    <option disabled selected>
-                      Select Categories
-                    </option>
-                    {
-                      getCategories ? getCategories.map((category, i) => {
-                        return (
-                          <>
-                            <option key={i} value={category.id}>{category.name}</option>
-                          </>
-                        )
-                      })
-                      : ''
-                    }
-                  </select>
+                    className="bg-white w-full rounded-lg border border-gray-300 text-sm"
+                  />
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                <div>
-                  <label className="sr-only" htmlFor="description">
-                    Description
-                  </label>
-
-                  <textarea
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                    className="w-full rounded-lg border border-gray-300 p-3 text-sm"
-                    placeholder="description"
-                    rows="7"
-                    id="description"
-                  ></textarea>
+              <div className="flex flex-wrap sm:gap-0 gap-2 justify-between items-start">
+                <div className="w-1/3">
+                  <img src="/assets/cover-404.jpg" alt="" className="w-60" />
                 </div>
 
-                <div>
+                <div className="w-2/3 col-span-1">
+                  <label className="sr-only" htmlFor="cover">
+                    Cover Book
+                  </label>
+                  <input
+                    onChange={(e) => setCover(e.target.files[0])}
+                    className="w-full rounded-lg border border-gray-300 p-3 text-sm mb-3"
+                    type="file"
+                    accept="image/*"
+                    id="cover"
+                  />
+
                   <label className="sr-only" htmlFor="page">
                     Book Page
                   </label>
@@ -288,18 +295,18 @@ export default function Book() {
                     type="number"
                     id="total_book"
                   />
-
-                  <label className="sr-only" htmlFor="cover">
-                    Cover Book
+                  <label className="sr-only" htmlFor="description">
+                    Description
                   </label>
-                  <input
-                    value={cover}
-                    onChange={(e) => setCover(e.target.value)}
-                    className="w-full rounded-lg border border-gray-300 p-3 text-sm mb-3"
-                    type="file"
-                    accept="image/*"
-                    id="cover"
-                  />
+
+                  <textarea
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                    className="w-full rounded-lg border border-gray-300 p-3 text-sm"
+                    placeholder="description"
+                    rows="7"
+                    id="description"
+                  ></textarea>
                 </div>
               </div>
 

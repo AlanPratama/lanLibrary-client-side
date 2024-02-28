@@ -36,7 +36,7 @@ export default function TableBook({ books }) {
                       <td className="px-6 py-3 text-sm">
                         <div className="flex items-center">
                           <img
-                            src="/assets/cover-404.jpg"
+                            src={"http://localhost:8000" + book.cover}
                             className="min-w-12 max-w-12 w-12 rounded-lg shadow shrink-0"
                           />
                           <div className="ml-4">

@@ -8,13 +8,14 @@ export default function Dashboard() {
   
   const location = useLocation()
 
+  // console.log(location.state);
   useEffect(() => {
-    if (location.state.notif) {
+    if (location.state) {
       toast.success(location.state.notif, {
         position: "top-center"
       })
     }
-  }, [location.state.notif])
+  }, [location.state])
 
   return (
     <div className="font-[sans-serif] text-[#fff] mt-8">
