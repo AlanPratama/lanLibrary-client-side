@@ -13,9 +13,9 @@ export default function Book() {
   const [books, setBooks] = useState();
 
   const [addBookModal, setAddBookModal] = useState(false);
-  const [getType, setGetType] = useState();
-  const [getWriter, setGetWriter] = useState();
-  const [getCategories, setGetCategories] = useState();
+  const [getType, setGetType] = useState([]);
+  const [getWriter, setGetWriter] = useState([]);
+  const [getCategories, setGetCategories] = useState([]);
 
   const handleAddBookModal = () => {
     if (!addBookModal) {
@@ -56,7 +56,7 @@ export default function Book() {
 
   const [writer, setWriter] = useState("");
   const [type, setType] = useState("");
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState([]);
   const [totalBook, setTotalBook] = useState("");
   const [title, setTitle] = useState("");
   const [publisher, setPublisher] = useState("");
@@ -104,7 +104,7 @@ export default function Book() {
         );
         setBooks(res.data.data);
         setType("");
-        setCategory("");
+        setCategory([]);
         setTotalBook("");
         setTitle("");
         setPublisher("");
@@ -121,8 +121,16 @@ export default function Book() {
       console.error(error);
     }
   };
+  console.log(getWriter);
+  const writerOptions = getWriter.map(writer => {
+    return { value: writer.id, label: writer.name }
+  })
 
-  const options = getCategories.map((cat, i) => {
+  const typeOptions = getType.map(type => {
+    return { value: type.id, label: type.name }
+  })
+
+  const categoryOptions = getCategories.map((cat, i) => {
     return { value: cat.id, label: cat.name };
   });
 
@@ -187,54 +195,32 @@ export default function Book() {
                   <label className="sr-only" htmlFor="email">
                     Writer
                   </label>
-                  <select
-                    name="writer"
-                    onChange={(e) => setWriter(e.target.value)}
-                    id="writer"
-                    className="bg-white w-full rounded-lg border border-gray-300 p-3 text-sm"
-                  >
-                    <option disabled selected>
-                      Select Writer
-                    </option>
-                    {getWriter
-                      ? getWriter.map((writer, i) => {
-                          return (
-                            <>
-                              <option key={i} value={writer.id}>
-                                {writer.name}
-                              </option>
-                            </>
-                          );
-                        })
-                      : ""}
-                  </select>
+                  <Select
+                    onChange={(selectedOptions) => setWriter(selectedOptions)}
+                    options={writerOptions}
+                    closeMenuOnSelect={true}
+                    components={animatedComponents}
+                    isMulti
+                    name="writer_id"
+                    id="writer_id"
+                    className="bg-white w-full rounded-lg border border-gray-300 text-sm"
+                  />
                 </div>
 
                 <div>
                   <label className="sr-only" htmlFor="type_id">
                     Type Book
                   </label>
-                  <select
-                    onChange={(e) => setType(e.target.value)}
+                  <Select
+                    onChange={(selectedOptions) => setType(selectedOptions)}
+                    options={typeOptions}
+                    closeMenuOnSelect={true}
+                    components={animatedComponents}
+                    isMulti
                     name="type_id"
                     id="type_id"
-                    className="bg-white w-full rounded-lg border border-gray-300 p-3 text-sm"
-                  >
-                    <option disabled selected>
-                      Select Type
-                    </option>
-                    {getType
-                      ? getType.map((type, i) => {
-                          return (
-                            <>
-                              <option key={i} value={type.id}>
-                                {type.name}
-                              </option>
-                            </>
-                          );
-                        })
-                      : ""}
-                  </select>
+                    className="bg-white w-full rounded-lg border border-gray-300 text-sm"
+                  />
                 </div>
 
                 <div>
@@ -243,8 +229,7 @@ export default function Book() {
                   </label>
                   <Select
                     onChange={(selectedOptions) => setCategory(selectedOptions)}
-                    // onChange={(e) => setCategory(e.target.value)}
-                    options={options}
+                    options={categoryOptions}
                     closeMenuOnSelect={false}
                     components={animatedComponents}
                     isMulti
