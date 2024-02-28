@@ -79,6 +79,22 @@ export default function Book() {
   const [page, setPage] = useState("");
   const [cover, setCover] = useState("");
 
+  const [previewAddCover, setPreviewAddCover] = useState(null)
+
+  const handleCoverAddChange = (e) => {
+    const selectedFile = e.target.files[0]
+    setCover(selectedFile)
+
+    if (selectedFile) {
+      const reader = new FileReader()
+      reader.onload = () => {
+        setPreviewAddCover(reader.result)
+      }
+      reader.readAsDataURL(selectedFile)
+    }
+
+  }
+
   const addBookSubmit = async (e) => {
     e.preventDefault();
 
@@ -242,7 +258,7 @@ export default function Book() {
 
               <div className="flex flex-wrap sm:gap-0 gap-2 justify-between items-start">
                 <div className="w-1/3">
-                  <img src="/assets/cover-404.jpg" alt="" className="w-60" />
+                  <img src={previewAddCover ? previewAddCover : '/assets/cover-404.jpg'} alt="" className="min-60 max-w-60 w-60 max-h-96 object-cover" />
                 </div>
 
                 <div className="w-2/3 col-span-1">
@@ -250,7 +266,7 @@ export default function Book() {
                     Cover Book
                   </label>
                   <input
-                    onChange={(e) => setCover(e.target.files[0])}
+                    onChange={handleCoverAddChange}
                     className="w-full rounded-lg border border-gray-300 p-3 text-sm mb-3"
                     type="file"
                     accept="image/*"
