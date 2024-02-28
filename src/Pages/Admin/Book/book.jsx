@@ -54,6 +54,20 @@ export default function Book() {
     })();
   }, []);
 
+  const writerOptions = getWriter.map(writer => {
+    return { value: writer.id, label: writer.name }
+  })
+
+  const typeOptions = getType.map(type => {
+    return { value: type.id, label: type.name }
+  })
+
+  const categoryOptions = getCategories.map((cat, i) => {
+    return { value: cat.id, label: cat.name };
+  });
+
+
+
   const [writer, setWriter] = useState("");
   const [type, setType] = useState("");
   const [category, setCategory] = useState([]);
@@ -70,8 +84,8 @@ export default function Book() {
 
     try {
       const formAdd = new FormData();
-      formAdd.append("type_id", type);
-      formAdd.append("writer_id", writer);
+      formAdd.append("type_id", type.value);
+      formAdd.append("writer_id", writer.value);
       formAdd.append("total_book", totalBook);
       formAdd.append("title", title);
       formAdd.append("publisher", publisher);
@@ -82,7 +96,7 @@ export default function Book() {
       category.forEach(cat => {
         formAdd.append("categories[]", cat.value);
       });
-      console.log(category);
+      console.log(writer.value, type);
       const response = await axios.post(
         "http://localhost:8000/api/libManager/book",
         formAdd,
@@ -121,18 +135,6 @@ export default function Book() {
       console.error(error);
     }
   };
-  console.log(getWriter);
-  const writerOptions = getWriter.map(writer => {
-    return { value: writer.id, label: writer.name }
-  })
-
-  const typeOptions = getType.map(type => {
-    return { value: type.id, label: type.name }
-  })
-
-  const categoryOptions = getCategories.map((cat, i) => {
-    return { value: cat.id, label: cat.name };
-  });
 
 
   const animatedComponents = makeAnimated();
@@ -200,7 +202,6 @@ export default function Book() {
                     options={writerOptions}
                     closeMenuOnSelect={true}
                     components={animatedComponents}
-                    isMulti
                     name="writer_id"
                     id="writer_id"
                     className="bg-white w-full rounded-lg border border-gray-300 text-sm"
@@ -216,7 +217,6 @@ export default function Book() {
                     options={typeOptions}
                     closeMenuOnSelect={true}
                     components={animatedComponents}
-                    isMulti
                     name="type_id"
                     id="type_id"
                     className="bg-white w-full rounded-lg border border-gray-300 text-sm"
