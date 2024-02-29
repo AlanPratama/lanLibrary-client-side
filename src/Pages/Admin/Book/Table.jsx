@@ -1,6 +1,141 @@
-import React from 'react'
+import { useEffect, useState } from 'react';
+import axios from 'axios'
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Select from "react-select";
+import makeAnimated from "react-select/animated";
 
-export default function TableBook({ books }) {
+export default function TableBook({ books, writers, types, categories }) {
+  const [bookSlug, setBookSLug] = useState("")
+  const [writerE, setWriterE] = useState("");
+  const [typeE, setTypeE] = useState("");
+  const [categoryE, setCategoryE] = useState([]);
+  const [totalBookE, setTotalBookE] = useState("");
+  const [titleE, setTitleE] = useState("");
+  const [publisherE, setPublisherE] = useState("");
+  const [descriptionE, setDescriptionE] = useState("");
+  const [yearE, setYearE] = useState("");
+  const [pageE, setPageE] = useState("");
+
+  const [coverE, setCoverE] = useState("");
+
+  const [previewEditCover, setPreviewEditCover] = useState(null)
+  const handleCoverAddChange = (e) => {
+    const selectedFile = e.target.files[0]
+    setCoverE(selectedFile)
+
+    if (selectedFile) {
+      const reader = new FileReader()
+      reader.onload = () => {
+        setPreviewEditCover(reader.result)
+      }
+      reader.readAsDataURL(selectedFile)
+    }
+
+  }
+
+
+  const writerOptionsE = writers.map(writer => {
+    return { value: writer.id, label: writer.name }
+  })
+
+  const typeOptionsE = types.map(writer => {
+    return { value: writer.id, label: writer.name }
+  })
+
+  const categoryOptionsE = categories.map(writer => {
+    return { value: writer.id, label: writer.name }
+  })
+
+
+  const [editBookModal, setEditBookModal] = useState(false);
+  const handleEditBookModal = async (bookSlug) => {
+    if (!editBookModal) {
+      const response = await axios.get(`http://localhost:8000/api/book/${bookSlug}`, {}, {
+        withCredentials: true
+      })
+
+      const data = response.data.data
+
+      const bookCategories = data.categories.map(category => ({
+        value: category.id,
+        label: category.name
+      }));
+
+      setBookSLug(data.slug)
+      setWriterE({ value: data.writers.id, label: data.writers.name })
+      setTypeE({ value: data.types.id, label: data.types.name })
+      setCategoryE(bookCategories)
+      setTotalBookE(data.total_book)
+      setTitleE(data.title)
+      setPublisherE(data.publisher)
+      setDescriptionE(data.description)
+      setYearE(data.year)
+      setPageE(data.page)
+      setCoverE(data.cover)
+
+      setEditBookModal(true);
+    } else {
+      setEditBookModal(false);
+    }
+  };
+
+  const editBookSubmit = async (e) => {
+    e.preventDefault()
+    try {
+      const formData = new FormData()
+      formData.append("writer_id", writerE.value)
+      formData.append('type_id', typeE.value)
+      formData.append('total_book', totalBookE)
+      formData.append('title', titleE)
+      formData.append('publisher', publisherE)
+      formData.append('description', descriptionE)
+      formData.append('year', yearE)
+      formData.append('page', pageE)
+      formData.append('cover', coverE)
+      categoryE.forEach(cat => {
+        formData.append('categories[]', cat.value)
+      })
+      console.log(formData);
+      // const response = await axios.put(`http://localhost:8000/api/libManager/book/${bookSlug}`, 
+      //   {
+      //     title: titleE
+      //   },
+      //   {
+      //     headers: { 'Content-Type' : 'multipart/form-data' },
+      //     withCredentials: true
+      //   }
+      // )
+      // console.log(response.data);
+
+      // PROBLEM SOLVED, U NEED TO USE POST METHOD INSTEAD PUT METHOD FOR SEND REQUEST != NULL
+      useEffect(() => {
+        (async () => {
+          await axios.put(`http://localhost:8000/api/libManager/book/${bookSlug}`, 
+          {
+            title: titleE
+          },
+          {
+            headers: { 'Content-Type' : 'multipart/form-data' },
+            withCredentials: true
+          }
+        )
+        .then((response) => {
+          console.log(response);
+        })
+        .catch((err) => {
+          console.error(err);
+        })
+        })()
+      }, [])
+
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  const animatedComponentsE = makeAnimated();
+
   return (
     <>
     <table className="min-w-full  bg-white font-[sans-serif]">
@@ -65,7 +200,7 @@ export default function TableBook({ books }) {
                         </p>
                       </td>
                       <td className="px-6 py-3">
-                        <button className="mr-4" title="Edit">
+                        <button className="mr-4" title="Edit" onClick={() => handleEditBookModal(book.slug)}>
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             className="w-5 fill-blue-500 hover:fill-blue-700"
@@ -104,6 +239,184 @@ export default function TableBook({ books }) {
               : "NO DATA"}
           </tbody>
         </table>
+
+
+        <div
+        className={`${
+          !editBookModal ? "hidden" : ""
+        }  l transition-all min-h-screen h-auto overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 max-h-full`}
+      >
+        <div className="relative w-full flex justify-center items-center h-full">
+          <div className="max-w-4xl max-h-full rounded-lg bg-white p-8 shadow-lg lg:col-span-3 lg:p-12">
+            <form className="space-y-4" onSubmit={editBookSubmit}>
+              <div className="grid grid-cols-1 gap-4 text-center sm:grid-cols-3">
+                <div>
+                  <label className="sr-only" htmlFor="title">
+                    Title
+                  </label>
+                  <input
+                    name='title'
+                    value={titleE}
+                    onChange={(e) => setTitleE(e.target.value)}
+                    className="w-full rounded-lg border border-gray-300 p-3 text-sm"
+                    placeholder="Book Title"
+                    type="text"
+                    id="title"
+                  />
+                </div>
+                <div>
+                  <label className="sr-only" htmlFor="publisher">
+                    Publisher
+                  </label>
+                  <input
+                    value={publisherE}
+                    onChange={(e) => setPublisherE(e.target.value)}
+                    className="w-full rounded-lg border border-gray-300 p-3 text-sm"
+                    placeholder="publisher"
+                    type="text"
+                    id="publisher"
+                  />
+                </div>
+                <div>
+                  <label className="sr-only" htmlFor="year">
+                    Year
+                  </label>
+                  <input
+                    value={yearE}
+                    onChange={(e) => setYearE(e.target.value)}
+                    className="w-full rounded-lg border border-gray-300 p-3 text-sm"
+                    placeholder="year"
+                    type="text"
+                    id="year"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 gap-4 text-center sm:grid-cols-3">
+                <div>
+                  <label className="sr-only" htmlFor="email">
+                    Writer
+                  </label>
+                  <Select
+                    value={writerE}
+                    onChange={(selectedOptions) => setWriterE(selectedOptions)}
+                    options={writerOptionsE}
+                    closeMenuOnSelect={true}
+                    components={animatedComponentsE}
+                    name="writer_id"
+                    id="writer_id"
+                    className="bg-white w-full rounded-lg border border-gray-300 text-sm"
+                  />
+                </div>
+
+                <div>
+                  <label className="sr-only" htmlFor="type_id">
+                    Type Book
+                  </label>
+                  <Select
+                    value={typeE}
+                    onChange={(selectedOptions) => setTypeE(selectedOptions)}
+                    options={typeOptionsE}
+                    closeMenuOnSelect={true}
+                    components={animatedComponentsE}
+                    name="type_id"
+                    id="type_id"
+                    className="bg-white w-full rounded-lg border border-gray-300 text-sm"
+                  />
+                </div>
+
+                <div>
+                  <label className="sr-only" htmlFor="categories">
+                    Categories
+                  </label>
+                  <Select
+                    value={categoryE}
+                    onChange={(selectedOptions) => setCategoryE(selectedOptions)}
+                    options={categoryOptionsE}
+                    closeMenuOnSelect={false}
+                    components={animatedComponentsE}
+                    isMulti
+                    name="categories"
+                    id="categories"
+                    className="bg-white w-full rounded-lg border border-gray-300 text-sm"
+                  />
+                </div>
+              </div>
+
+              <div className="flex flex-wrap sm:gap-0 gap-2 justify-between items-start">
+                <div className="w-1/3">
+                  <img src={previewEditCover ? previewEditCover : `http://localhost:8000${coverE}`} alt="" className="min-60 max-w-60 w-60 max-h-96 object-cover" />
+                </div>
+
+                <div className="w-2/3 col-span-1">
+                  <label className="sr-only" htmlFor="cover">
+                    Cover Book
+                  </label>
+                  <input
+                    onChange={handleCoverAddChange}
+                    className="w-full rounded-lg border border-gray-300 p-3 text-sm mb-3"
+                    type="file"
+                    accept="image/*"
+                    id="cover"
+                  />
+
+                  <label className="sr-only" htmlFor="page">
+                    Book Page
+                  </label>
+                  <input
+                    value={pageE}
+                    onChange={(e) => setPageE(e.target.value)}
+                    className="w-full rounded-lg border border-gray-300 p-3 text-sm mb-3"
+                    placeholder="Book Page"
+                    type="number"
+                    id="page"
+                  />
+
+                  <label className="sr-only" htmlFor="total_book">
+                    Total Book
+                  </label>
+                  <input
+                    value={totalBookE}
+                    onChange={(e) => setTotalBookE(e.target.value)}
+                    className="w-full rounded-lg border border-gray-300 p-3 text-sm mb-3"
+                    placeholder="Total Book"
+                    type="number"
+                    id="total_book"
+                  />
+                  <label className="sr-only" htmlFor="description">
+                    Description
+                  </label>
+
+                  <textarea
+                    value={descriptionE}
+                    onChange={(e) => setDescriptionE(e.target.value)}
+                    className="w-full rounded-lg border border-gray-300 p-3 text-sm"
+                    placeholder="description"
+                    rows="7"
+                    id="description"
+                  ></textarea>
+                </div>
+              </div>
+
+              <div className="mt-4">
+                <button
+                  type="submit"
+                  className="inline-block w-full rounded bg-deep-purple-accent-400 px-3 py-1.5 font-medium text-white sm:w-auto"
+                >
+                  Submit
+                </button>
+                <button
+                  onClick={handleEditBookModal}
+                  type="button"
+                  className="inline-block w-full rounded bg-white border border-deep-purple-accent-400 px-3 py-1.5 font-medium text-deep-purple-accent-400 ml-2 sm:w-auto"
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
     </>
   )
 }

@@ -10,11 +10,11 @@ import makeAnimated from "react-select/animated";
 export default function Book() {
   const [books, setBooks] = useState();
 
-  const [addBookModal, setAddBookModal] = useState(false);
   const [getType, setGetType] = useState([]);
   const [getWriter, setGetWriter] = useState([]);
   const [getCategories, setGetCategories] = useState([]);
-
+  
+  const [addBookModal, setAddBookModal] = useState(false);
   const handleAddBookModal = () => {
     if (!addBookModal) {
       setAddBookModal(true);
@@ -60,7 +60,7 @@ export default function Book() {
     return { value: type.id, label: type.name }
   })
 
-  const categoryOptions = getCategories.map((cat, i) => {
+  const categoryOptions = getCategories.map(cat => {
     return { value: cat.id, label: cat.name };
   });
 
@@ -110,7 +110,7 @@ export default function Book() {
       category.forEach(cat => {
         formAdd.append("categories[]", cat.value);
       });
-      console.log(writer.value, type);
+      console.log(formAdd);
       const response = await axios.post(
         "http://localhost:8000/api/libManager/book",
         formAdd,
@@ -152,7 +152,6 @@ export default function Book() {
 
 
   const animatedComponents = makeAnimated();
-
   return (
     <>
       <ToastContainer />
@@ -337,7 +336,7 @@ export default function Book() {
         Add Book
       </button>
       <div className="overflow-x-auto min-w-full pb-8 pt-2">
-        <TableBook books={books} />
+        <TableBook books={books} writers={getWriter} types={getType} categories={getCategories} />
         <div className="md:flex mt-4 px-6">
           <p className="text-sm text-gray-400 flex-1">
             Showind 1 to 5 of 100 entries
