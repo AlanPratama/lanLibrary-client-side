@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import AdminLayout from "../../../Layouts/AdminLayout";
-import Table from "../../../Components/Table";
 import axios from "axios";
 import TableBook from "./Table";
 import "../../../index.css";
