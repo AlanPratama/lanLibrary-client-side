@@ -96,7 +96,7 @@ export default function TableBook({ books, setBooks, writers, types, categories 
       categoryE.forEach(cat => {
         formEditData.append('categories[]', cat.value)
       })
-      console.log(coverE);
+      
       const response = await axios.post(`http://localhost:8000/api/libManager/book/${bookSlug}`, 
         formEditData,
         {
@@ -167,16 +167,20 @@ export default function TableBook({ books, setBooks, writers, types, categories 
       const response = await axios.delete(`http://localhost:8000/api/libManager/book/${bookDelSlug}`, {
         withCredentials: true
       })
-      console.log(response.data);
+      
 
       if (response.data.status == 'success') {
+        const res = await axios.get('http://localhost:8000/api/book', {}, {
+          withCredentials: true,
+        })
+
+        setBooks(res.data.data)
+
         setBookDelCover("")
         setBookDelTitle("")
         setBookDelSlug("")
         setDelBookModal(false)
         toast.success(response.data.message)
-      } else {
-        console.error('THERE IS SOMETHING WRONG!');
       }
 
     } catch (error) {
