@@ -5,7 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 
-export default function TableBook({ books, writers, types, categories }) {
+export default function TableBook({ books, setBooks, writers, types, categories }) {
   const [bookSlug, setBookSLug] = useState("")
   const [writerE, setWriterE] = useState("");
   const [typeE, setTypeE] = useState("");
@@ -83,51 +83,52 @@ export default function TableBook({ books, writers, types, categories }) {
   const editBookSubmit = async (e) => {
     e.preventDefault()
     try {
-      const formData = new FormData()
-      formData.append("writer_id", writerE.value)
-      formData.append('type_id', typeE.value)
-      formData.append('total_book', totalBookE)
-      formData.append('title', titleE)
-      formData.append('publisher', publisherE)
-      formData.append('description', descriptionE)
-      formData.append('year', yearE)
-      formData.append('page', pageE)
-      formData.append('cover', coverE)
+      const formEditData = new FormData()
+      formEditData.append("writer_id", writerE.value)
+      formEditData.append('type_id', typeE.value)
+      formEditData.append('total_book', totalBookE)
+      formEditData.append('title', titleE)
+      formEditData.append('publisher', publisherE)
+      formEditData.append('description', descriptionE)
+      formEditData.append('year', yearE)
+      formEditData.append('page', pageE)
+      formEditData.append('cover', coverE)
       categoryE.forEach(cat => {
-        formData.append('categories[]', cat.value)
+        formEditData.append('categories[]', cat.value)
       })
-      console.log(formData);
-      // const response = await axios.put(`http://localhost:8000/api/libManager/book/${bookSlug}`, 
-      //   {
-      //     title: titleE
-      //   },
-      //   {
-      //     headers: { 'Content-Type' : 'multipart/form-data' },
-      //     withCredentials: true
-      //   }
-      // )
-      // console.log(response.data);
-
-      // PROBLEM SOLVED, U NEED TO USE POST METHOD INSTEAD PUT METHOD FOR SEND REQUEST != NULL
-      useEffect(() => {
-        (async () => {
-          await axios.put(`http://localhost:8000/api/libManager/book/${bookSlug}`, 
+      console.log(coverE);
+      const response = await axios.post(`http://localhost:8000/api/libManager/book/${bookSlug}`, 
+        formEditData,
+        {
+          headers: { 'Content-Type' : 'multipart/form-data' },
+          withCredentials: true
+        }
+      )
+      console.log(response.data);
+      if (response.data.status == 'success') {
+        const res = await axios.get(
+          "http://localhost:8000/api/book",
+          {},
           {
-            title: titleE
-          },
-          {
-            headers: { 'Content-Type' : 'multipart/form-data' },
-            withCredentials: true
+            withCredentials: true,
           }
-        )
-        .then((response) => {
-          console.log(response);
-        })
-        .catch((err) => {
-          console.error(err);
-        })
-        })()
-      }, [])
+        );
+        
+        setBooks(res.data.data);
+        setTypeE("");
+        setCategoryE([]);
+        setTotalBookE("");
+        setTitleE("");
+        setPublisherE("");
+        setDescriptionE("");
+        setYearE("");
+        setPageE("");
+        setCoverE("");
+        setEditBookModal(false);
+        toast.success(response.data.message, {
+          position: "top-center",
+        });
+      }
 
     } catch (error) {
       console.error(error);

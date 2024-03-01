@@ -336,7 +336,7 @@ export default function Book() {
         Add Book
       </button>
       <div className="overflow-x-auto min-w-full pb-8 pt-2">
-        <TableBook books={books} writers={getWriter} types={getType} categories={getCategories} />
+        <TableBook books={books} setBooks={setBooks} writers={getWriter} types={getType} categories={getCategories} />
         <div className="md:flex mt-4 px-6">
           <p className="text-sm text-gray-400 flex-1">
             Showind 1 to 5 of 100 entries
