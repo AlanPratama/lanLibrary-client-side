@@ -135,6 +135,56 @@ export default function TableBook({ books, setBooks, writers, types, categories 
     }
   }
 
+
+  const [delBookModal, setDelBookModal] = useState(false)
+  const [bookDelCover, setBookDelCover] = useState("")
+  const [bookDelTitle, setBookDelTitle] = useState("")
+  const [bookDelSlug, setBookDelSlug] = useState("")
+
+  const handleDelBookModal = async (bookSlug) => {
+    if (!delBookModal) {
+      const response = await axios.get(`http://localhost:8000/api/book/${bookSlug}`, {}, {
+        withCredentials: true,
+      })
+
+      const book = response.data.data
+
+      setBookDelCover(book.cover)
+      setBookDelTitle(book.title)
+      setBookDelSlug(book.slug)
+      setDelBookModal(true)
+      
+    } else {
+      // setBookDelCover("") 
+      setDelBookModal(false)
+    }
+  }
+
+  const delBookSubmit = async (e) => {
+    e.preventDefault()
+
+    try {
+      const response = await axios.delete(`http://localhost:8000/api/libManager/book/${bookDelSlug}`, {
+        withCredentials: true
+      })
+      console.log(response.data);
+
+      if (response.data.status == 'success') {
+        setBookDelCover("")
+        setBookDelTitle("")
+        setBookDelSlug("")
+        setDelBookModal(false)
+        toast.success(response.data.message)
+      } else {
+        console.error('THERE IS SOMETHING WRONG!');
+      }
+
+    } catch (error) {
+      console.error(error);
+    }
+
+  }
+
   const animatedComponentsE = makeAnimated();
 
   return (
@@ -217,7 +267,7 @@ export default function TableBook({ books, setBooks, writers, types, categories 
                             />
                           </svg>
                         </button>
-                        <button className="mr-4" title="Delete">
+                        <button className="mr-4" title="Delete" onClick={() => handleDelBookModal(book.slug)}>
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             className="w-5 fill-red-500 hover:fill-red-700"
@@ -408,6 +458,44 @@ export default function TableBook({ books, setBooks, writers, types, categories 
                 </button>
                 <button
                   onClick={handleEditBookModal}
+                  type="button"
+                  className="inline-block w-full rounded bg-white border border-deep-purple-accent-400 px-3 py-1.5 font-medium text-deep-purple-accent-400 ml-2 sm:w-auto"
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div
+        className={`${
+          !delBookModal ? "hidden" : ""
+        }  l transition-all min-h-screen h-auto overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 max-h-full`}
+      >
+        <div className="relative w-full flex justify-center items-center h-full">
+          <div className="max-w-4xl max-h-full rounded-lg bg-white p-8 shadow-lg lg:col-span-3 lg:p-12">
+            <form className="space-y-4 flex flex-col justify-center items-center" onSubmit={editBookSubmit}>
+              <h3 className='text-xl text-deep-purple-accent-400 font-medium'>Apakah Kamu Yakin Akan Menghapus Buku Ini?</h3>
+
+              <div className="w-full mt-4 flex justify-start items-start gap-3">
+                <img src={`http://localhost:8000${bookDelCover}`} alt={bookDelCover} className='shadow rounded min-w-36 max-w-36' />
+                <div className="flex justify-start items-start flex-col">
+                  <h3 className='text-lg'>{bookDelTitle}</h3>
+                </div>
+              </div>
+
+              <div className="mt-4">
+                <button
+                  onClick={delBookSubmit}
+                  type="submit"
+                  className="inline-block w-full rounded bg-red-500 px-3 py-1.5 font-medium text-white sm:w-auto"
+                >
+                  Hapus
+                </button>
+                <button
+                  onClick={handleDelBookModal}
                   type="button"
                   className="inline-block w-full rounded bg-white border border-deep-purple-accent-400 px-3 py-1.5 font-medium text-deep-purple-accent-400 ml-2 sm:w-auto"
                 >
