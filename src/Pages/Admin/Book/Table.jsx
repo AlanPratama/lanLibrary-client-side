@@ -104,7 +104,7 @@ export default function TableBook({ books, setBooks, writers, types, categories 
           withCredentials: true
         }
       )
-      console.log(response.data);
+      
       if (response.data.status == 'success') {
         const res = await axios.get(
           "http://localhost:8000/api/book",
