@@ -113,8 +113,9 @@ export default function TableBook({ books, setBooks, writers, types, categories 
             withCredentials: true,
           }
         );
+        console.log(res);
         
-        setBooks(res.data.data);
+        setBooks(res.data.data.data);
         setTypeE("");
         setCategoryE([]);
         setTotalBookE("");
@@ -174,7 +175,8 @@ export default function TableBook({ books, setBooks, writers, types, categories 
           withCredentials: true,
         })
 
-        setBooks(res.data.data)
+        console.log(res);
+        setBooks(res.data.data.data)
 
         setBookDelCover("")
         setBookDelTitle("")

@@ -208,7 +208,7 @@ export default function Book() {
             withCredentials: true,
           }
         );
-        setBooks(res.data.data);
+        setBooks(res.data.data.data);
         setType("");
         setCategory([]);
         setTotalBook("");
@@ -234,7 +234,7 @@ export default function Book() {
 
   const handleFilter = (typeId, typeName) => {
     setFilterBook({ typeId: typeId, label: typeName });
-    setIsActiveDrop(false)
+    setIsActiveDrop(false);
   };
 
   const animatedComponents = makeAnimated();
@@ -437,7 +437,7 @@ export default function Book() {
               type="button"
               className="px-3 py-1.5 rounded text-white font-semibold border-none outline-none bg-blue-600 hover:bg-blue-700 active:bg-blue-600"
             >
-              { filterBook ? filterBook.label : 'Filter' }
+              {filterBook ? filterBook.label : "Filter"}
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="w-3 fill-white inline ml-3"
@@ -455,7 +455,7 @@ export default function Book() {
               className={`${
                 !isActiveDrop
                   ? "hidden"
-                  : "absolute shadow-lg bg-white py-2 z-[1000] min-w-full w-max rounded max-h-96 overflow-auto"
+                  : "absolute shadow-lg bg-white pt-2 z-[1000] min-w-full w-max rounded max-h-96 overflow-auto"
               }`}
             >
               {getType
@@ -473,15 +473,21 @@ export default function Book() {
                     );
                   })
                 : ""}
-              <li
-                onClick={() => {
-                  setFilterBook(null)
-                  setIsActiveDrop(false)
-                }}
-                className="py-2.5 px-6 hover:bg-blue-50 text-black text-sm cursor-pointer"
-              >
-                Hapus Filter
-              </li>
+              {filterBook ? (
+                <>
+                  <li
+                    onClick={() => {
+                      setFilterBook(null);
+                      setIsActiveDrop(false);
+                    }}
+                    className="py-2.5 px-6 bg-red-500 text-white text-sm cursor-pointer"
+                  >
+                    Hapus Filter
+                  </li>
+                </>
+              ) : (
+                ""
+              )}
             </ul>
           </div>
         </div>
