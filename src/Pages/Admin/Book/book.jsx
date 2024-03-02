@@ -10,6 +10,7 @@ import makeAnimated from "react-select/animated";
 export default function Book() {
   const [books, setBooks] = useState();
   const [searchBook, setSearchBook] = useState();
+  const [filterBook, setFilterBook] = useState();
   const searchTimeOut = useRef();
 
   const [getType, setGetType] = useState([]);
@@ -36,7 +37,8 @@ export default function Book() {
   };
 
   useEffect(() => {
-    if (!searchBook) {
+    if (!searchBook && !filterBook) {
+      console.log("notOne");
       (async () => {
         try {
           const response = await axios.get(
@@ -47,7 +49,8 @@ export default function Book() {
             }
           );
 
-          setBooks(response.data.data);
+          setBooks(response.data.data.data);
+          console.log(response.data.data.data);
 
           const resSD = await axios.get(
             "http://localhost:8000/api/side-dish-book",
@@ -66,35 +69,69 @@ export default function Book() {
     } else {
       clearTimeout(searchTimeOut.current);
 
-      searchTimeOut.current = setTimeout(async () => {
-        try {
-          const response = await axios.get(
-            `http://localhost:8000/api/book?title=${searchBook}`,
-            {
-              withCredentials: true,
-            }
-          );
+      if (searchBook && !filterBook) {
+        console.log({ search: searchBook });
+        searchTimeOut.current = setTimeout(async () => {
+          try {
+            const response = await axios.get(
+              `http://localhost:8000/api/book?title=${searchBook}`,
+              {
+                withCredentials: true,
+              }
+            );
 
+            console.log(response.data.data);
+            console.log(searchTimeOut);
+            setBooks(response.data.data.data);
+          } catch (error) {
+            console.error(error);
+          }
+        }, 1000);
 
-          // if (searchBook) {
-            
-          // } else if (!searchBook) {
+        return () => clearTimeout(searchTimeOut.current);
+      } else if (filterBook && !searchBook) {
+        console.log({ filter: filterBook });
+        searchTimeOut.current = setTimeout(async () => {
+          try {
+            const response = await axios.get(
+              `http://localhost:8000/api/book?type=${filterBook.typeId}`,
+              {
+                withCredentials: true,
+              }
+            );
 
-          // } else {
+            console.log(response.data.data);
+            console.log(searchTimeOut);
+            setBooks(response.data.data.data);
+          } catch (error) {
+            console.error(error);
+          }
+        }, 1000);
 
-          // }
+        return () => clearTimeout(searchTimeOut.current);
+      } else if (searchBook && filterBook) {
+        console.log({ search_and_filter: [searchBook, filterBook] });
+        searchTimeOut.current = setTimeout(async () => {
+          try {
+            const response = await axios.get(
+              `http://localhost:8000/api/book?title=${searchBook}&type=${filterBook.typeId}`,
+              {
+                withCredentials: true,
+              }
+            );
 
-          console.log(response.data.data);
-          console.log(searchTimeOut);
-          setBooks(response.data.data);
-        } catch (error) {
-          console.error(error);
-        }
-      }, 1000);
+            console.log(response.data.data);
+            console.log(searchTimeOut);
+            setBooks(response.data.data.data);
+          } catch (error) {
+            console.error(error);
+          }
+        }, 1000);
 
-      return () => clearTimeout(searchTimeOut.current);
+        return () => clearTimeout(searchTimeOut.current);
+      }
     }
-  }, [searchBook]);
+  }, [searchBook, filterBook]);
 
   const writerOptions = getWriter.map((writer) => {
     return { value: writer.id, label: writer.name };
@@ -193,6 +230,11 @@ export default function Book() {
 
   const hsc = (e) => {
     setSearchBook(e.target.value);
+  };
+
+  const handleFilter = (typeId, typeName) => {
+    setFilterBook({ typeId: typeId, label: typeName });
+    setIsActiveDrop(false)
   };
 
   const animatedComponents = makeAnimated();
@@ -395,7 +437,7 @@ export default function Book() {
               type="button"
               className="px-3 py-1.5 rounded text-white font-semibold border-none outline-none bg-blue-600 hover:bg-blue-700 active:bg-blue-600"
             >
-              Filter
+              { filterBook ? filterBook.label : 'Filter' }
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="w-3 fill-white inline ml-3"
@@ -422,6 +464,7 @@ export default function Book() {
                       <>
                         <li
                           key={i}
+                          onClick={() => handleFilter(type.id, type.name)}
                           className="py-2.5 px-6 hover:bg-blue-50 text-black text-sm cursor-pointer"
                         >
                           {type.name}
@@ -430,6 +473,15 @@ export default function Book() {
                     );
                   })
                 : ""}
+              <li
+                onClick={() => {
+                  setFilterBook(null)
+                  setIsActiveDrop(false)
+                }}
+                className="py-2.5 px-6 hover:bg-blue-50 text-black text-sm cursor-pointer"
+              >
+                Hapus Filter
+              </li>
             </ul>
           </div>
         </div>
