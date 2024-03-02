@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import TableBook from "./Table";
 import "../../../index.css";
@@ -9,11 +9,13 @@ import makeAnimated from "react-select/animated";
 
 export default function Book() {
   const [books, setBooks] = useState();
+  const [searchBook, setSearchBook] = useState();
+  const searchTimeOut = useRef();
 
   const [getType, setGetType] = useState([]);
   const [getWriter, setGetWriter] = useState([]);
   const [getCategories, setGetCategories] = useState([]);
-  
+
   const [addBookModal, setAddBookModal] = useState(false);
   const handleAddBookModal = () => {
     if (!addBookModal) {
@@ -23,48 +25,88 @@ export default function Book() {
     }
   };
 
+  const [isActiveDrop, setIsActiveDrop] = useState(false);
+
+  const handleActive = () => {
+    if (isActiveDrop) {
+      setIsActiveDrop(false);
+    } else {
+      setIsActiveDrop(true);
+    }
+  };
+
   useEffect(() => {
-    (async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:8000/api/book",
-          {},
-          {
-            withCredentials: true,
-          }
-        );
+    if (!searchBook) {
+      (async () => {
+        try {
+          const response = await axios.get(
+            "http://localhost:8000/api/book",
+            {},
+            {
+              withCredentials: true,
+            }
+          );
 
-        setBooks(response.data.data);
+          setBooks(response.data.data);
 
-        const resSD = await axios.get(
-          "http://localhost:8000/api/side-dish-book",
-          {},
-          {
-            withCredentials: true,
-          }
-        );
-        setGetWriter(resSD.data.writers);
-        setGetType(resSD.data.types);
-        setGetCategories(resSD.data.categories);
-      } catch (error) {
-        console.error(error);
-      }
-    })();
-  }, []);
+          const resSD = await axios.get(
+            "http://localhost:8000/api/side-dish-book",
+            {},
+            {
+              withCredentials: true,
+            }
+          );
+          setGetWriter(resSD.data.writers);
+          setGetType(resSD.data.types);
+          setGetCategories(resSD.data.categories);
+        } catch (error) {
+          console.error(error);
+        }
+      })();
+    } else {
+      clearTimeout(searchTimeOut.current);
 
-  const writerOptions = getWriter.map(writer => {
-    return { value: writer.id, label: writer.name }
-  })
+      searchTimeOut.current = setTimeout(async () => {
+        try {
+          const response = await axios.get(
+            `http://localhost:8000/api/book?title=${searchBook}`,
+            {
+              withCredentials: true,
+            }
+          );
 
-  const typeOptions = getType.map(type => {
-    return { value: type.id, label: type.name }
-  })
 
-  const categoryOptions = getCategories.map(cat => {
-    return { value: cat.id, label: cat.name };
+          // if (searchBook) {
+            
+          // } else if (!searchBook) {
+
+          // } else {
+
+          // }
+
+          console.log(response.data.data);
+          console.log(searchTimeOut);
+          setBooks(response.data.data);
+        } catch (error) {
+          console.error(error);
+        }
+      }, 1000);
+
+      return () => clearTimeout(searchTimeOut.current);
+    }
+  }, [searchBook]);
+
+  const writerOptions = getWriter.map((writer) => {
+    return { value: writer.id, label: writer.name };
   });
 
+  const typeOptions = getType.map((type) => {
+    return { value: type.id, label: type.name };
+  });
 
+  const categoryOptions = getCategories.map((cat) => {
+    return { value: cat.id, label: cat.name };
+  });
 
   const [writer, setWriter] = useState("");
   const [type, setType] = useState("");
@@ -77,21 +119,20 @@ export default function Book() {
   const [page, setPage] = useState("");
   const [cover, setCover] = useState("");
 
-  const [previewAddCover, setPreviewAddCover] = useState(null)
+  const [previewAddCover, setPreviewAddCover] = useState(null);
 
   const handleCoverAddChange = (e) => {
-    const selectedFile = e.target.files[0]
-    setCover(selectedFile)
+    const selectedFile = e.target.files[0];
+    setCover(selectedFile);
 
     if (selectedFile) {
-      const reader = new FileReader()
+      const reader = new FileReader();
       reader.onload = () => {
-        setPreviewAddCover(reader.result)
-      }
-      reader.readAsDataURL(selectedFile)
+        setPreviewAddCover(reader.result);
+      };
+      reader.readAsDataURL(selectedFile);
     }
-
-  }
+  };
 
   const addBookSubmit = async (e) => {
     e.preventDefault();
@@ -107,7 +148,7 @@ export default function Book() {
       formAdd.append("year", year);
       formAdd.append("page", page);
       formAdd.append("cover", cover);
-      category.forEach(cat => {
+      category.forEach((cat) => {
         formAdd.append("categories[]", cat.value);
       });
       console.log(formAdd);
@@ -150,6 +191,9 @@ export default function Book() {
     }
   };
 
+  const hsc = (e) => {
+    setSearchBook(e.target.value);
+  };
 
   const animatedComponents = makeAnimated();
   return (
@@ -255,7 +299,15 @@ export default function Book() {
 
               <div className="flex flex-wrap sm:gap-0 gap-2 justify-between items-start">
                 <div className="w-1/3">
-                  <img src={previewAddCover ? previewAddCover : '/assets/cover-404.jpg'} alt="" className="min-60 max-w-60 w-60 max-h-96 object-cover" />
+                  <img
+                    src={
+                      previewAddCover
+                        ? previewAddCover
+                        : "/assets/cover-404.jpg"
+                    }
+                    alt=""
+                    className="min-60 max-w-60 w-60 max-h-96 object-cover"
+                  />
                 </div>
 
                 <div className="w-2/3 col-span-1">
@@ -328,15 +380,94 @@ export default function Book() {
         </div>
       </div>
 
-      <button
-        onClick={handleAddBookModal}
-        type="button"
-        className="inline-block w-full rounded bg-deep-purple-accent-400 px-3 py-1.5 font-medium text-white sm:w-auto"
-      >
-        Add Book
-      </button>
+      <div className="flex justify-between gap-3 mb-4 items-center">
+        <div className="flex justify-start items-center gap-2">
+          <button
+            onClick={handleAddBookModal}
+            type="button"
+            className="inline-block w-full rounded bg-deep-purple-accent-400 px-3 py-1.5 font-medium text-white sm:w-auto"
+          >
+            Add Book
+          </button>
+          <div className="relative font-[sans-serif] w-max mx-auto">
+            <button
+              onClick={handleActive}
+              type="button"
+              className="px-3 py-1.5 rounded text-white font-semibold border-none outline-none bg-blue-600 hover:bg-blue-700 active:bg-blue-600"
+            >
+              Filter
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="w-3 fill-white inline ml-3"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M11.99997 18.1669a2.38 2.38 0 0 1-1.68266-.69733l-9.52-9.52a2.38 2.38 0 1 1 3.36532-3.36532l7.83734 7.83734 7.83734-7.83734a2.38 2.38 0 1 1 3.36532 3.36532l-9.52 9.52a2.38 2.38 0 0 1-1.68266.69734z"
+                  clip-rule="evenodd"
+                  data-original="#000000"
+                />
+              </svg>
+            </button>
+            <ul
+              className={`${
+                !isActiveDrop
+                  ? "hidden"
+                  : "absolute shadow-lg bg-white py-2 z-[1000] min-w-full w-max rounded max-h-96 overflow-auto"
+              }`}
+            >
+              {getType
+                ? getType.map((type, i) => {
+                    return (
+                      <>
+                        <li
+                          key={i}
+                          className="py-2.5 px-6 hover:bg-blue-50 text-black text-sm cursor-pointer"
+                        >
+                          {type.name}
+                        </li>
+                      </>
+                    );
+                  })
+                : ""}
+            </ul>
+          </div>
+        </div>
+        <div className="relative flex w-full max-w-lg items-center justify-between rounded-md border shadow">
+          <svg
+            className="absolute left-2 block h-5 w-5 text-gray-400"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <circle cx="11" cy="11" r="8" className=""></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65" className=""></line>
+          </svg>
+          <input
+            value={searchBook}
+            onChange={hsc}
+            type="name"
+            name="search"
+            className="h-10 w-full rounded-md py-4 pr-40 pl-12 outline-none focus:ring-2"
+            placeholder="Search title book....."
+          />
+        </div>
+      </div>
+
       <div className="overflow-x-auto min-w-full pb-8 pt-2">
-        <TableBook books={books} setBooks={setBooks} writers={getWriter} types={getType} categories={getCategories} />
+        <TableBook
+          books={books}
+          setBooks={setBooks}
+          writers={getWriter}
+          types={getType}
+          categories={getCategories}
+        />
         <div className="md:flex mt-4 px-6">
           <p className="text-sm text-gray-400 flex-1">
             Showind 1 to 5 of 100 entries
