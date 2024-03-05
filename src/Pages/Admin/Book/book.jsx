@@ -43,7 +43,6 @@ export default function Book() {
         try {
           const response = await axios.get(
             "http://localhost:8000/api/book",
-            {},
             {
               withCredentials: true,
             }
