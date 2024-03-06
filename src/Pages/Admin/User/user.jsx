@@ -4,6 +4,7 @@ import Table from './Table'
 
 export default function User() {
   const [dataUser, setDataUser] = useState([])
+  const [meta, setMeta] = useState()
 
   useEffect(() => {
   (async () => {
@@ -14,7 +15,7 @@ export default function User() {
 
       console.log(response);
       setDataUser(response.data.data.data)
-      console.log(dataUser);
+      setMeta(response.data.data)
 
     } catch (error) {
       console.error(error);
@@ -24,7 +25,14 @@ export default function User() {
 
   return (
     <>
-    <Table dataUser={dataUser} setDataUser={setDataUser} /> 
+      {
+        meta ? (
+          <>
+            <Table dataUser={dataUser} setDataUser={setDataUser} meta={meta} /> 
+          </>
+        )
+        : ''
+      }
     </>
   )
 }

@@ -1,10 +1,46 @@
 import axios from "axios";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-export default function Table({ dataUser, setDataUser }) {
-  console.log(dataUser);
+export default function Table({ dataUser, setDataUser, meta }) {
+
+  const [prev, setPrev] = useState(meta.prev_page_url)
+  const [next, setNext] = useState(meta.next_page_url)
+  const [current, setCurrent] = useState(meta.current_page)
+  const [info, setInfo] = useState({ show: meta.per_page, last: meta.last_page })
+
+  const handlePrev = async () => {
+    try {
+      const response = await axios.get(prev, {withCredentials: true})
+      setDataUser(response.data.data.data)
+      setPrev(response.data.data.prev_page_url)
+      setNext(response.data.data.next_page_url)
+      setCurrent(response.data.data.current_page)
+      setInfo({show: response.data.data.data.length, last: response.data.data.last_page})
+      console.log(response.data.data);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+
+  const handleNext = async () => {
+    try {
+      const response = await axios.get(next, {withCredentials: true})
+      setDataUser(response.data.data.data)
+      setPrev(response.data.data.prev_page_url)
+      setNext(response.data.data.next_page_url)
+      setCurrent(response.data.data.current_page)
+      setInfo({show: response.data.data.data.length, last: response.data.data.last_page})
+      console.log(response.data.data);
+      console.log(response);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+
 
   const handleVerifiedUser = async (dataSlug) => {
     try {
@@ -16,7 +52,7 @@ export default function Table({ dataUser, setDataUser }) {
         }
       );
 
-      console.log(response.data.data);
+      // console.log(response.data.data);
 
       if (response.data.status == "success") {
         toast.success(response.data.message, {
@@ -31,6 +67,7 @@ export default function Table({ dataUser, setDataUser }) {
       console.error(error);
     }
   };
+
   return (
     <div className="overflow-x-auto min-w-full py-8">
       <ToastContainer />
@@ -60,7 +97,7 @@ export default function Table({ dataUser, setDataUser }) {
             ? dataUser.map((data, i) => {
                 return (
                   <>
-                    <tr className="" key={i}>
+                    <tr className="" key={data.slug}>
                       <td className="pl-6 w-8">{i + 1}</td>
                       <td className="px-6 py-3 text-sm">
                         <div className="flex items-center cursor-pointer">
@@ -157,19 +194,19 @@ export default function Table({ dataUser, setDataUser }) {
       </table>
       <div className="md:flex mt-4 px-6">
         <p className="text-sm text-gray-400 flex-1">
-          Showind 1 to 5 of 100 entries
+          Showind 1 to {info.show} of {info.last} entries
         </p>
         <div className="flex items-center max-md:mt-4">
-          <p className="text-sm text-gray-400">Display</p>
+          {/* <p className="text-sm text-gray-400">Display</p>
           <select className="text-sm text-gray-400 border border-gray-400 rounded h-7 mx-4 outline-none">
             <option>5</option>
             <option>10</option>
             <option>20</option>
             <option>50</option>
             <option>100</option>
-          </select>
+          </select> */}
           <ul className="flex space-x-1 ml-2">
-            <li className="flex items-center justify-center cursor-pointer bg-gray-300 w-7 h-7 rounded">
+            <li onClick={handlePrev} className={`${prev ? 'flex' : 'hidden'} items-center justify-center cursor-pointer bg-gray-300 w-7 h-7 rounded`}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="w-3 fill-gray-500"
@@ -181,19 +218,16 @@ export default function Table({ dataUser, setDataUser }) {
                 />
               </svg>
             </li>
-            <li className="flex items-center justify-center cursor-pointer text-sm w-7 h-7 rounded">
+            {/* <li className="flex items-center justify-center cursor-pointer text-sm w-7 h-7 rounded">
               1
-            </li>
+            </li> */}
             <li className="flex items-center justify-center cursor-pointer text-sm bg-[#007bff] text-white w-7 h-7 rounded">
-              2
+              {current}
             </li>
-            <li className="flex items-center justify-center cursor-pointer text-sm w-7 h-7 rounded">
+            {/* <li className="flex items-center justify-center cursor-pointer text-sm w-7 h-7 rounded">
               3
-            </li>
-            <li className="flex items-center justify-center cursor-pointer text-sm w-7 h-7 rounded">
-              4
-            </li>
-            <li className="flex items-center justify-center cursor-pointer bg-gray-300 w-7 h-7 rounded">
+            </li> */}
+            <li onClick={handleNext} className={`${next ? 'flex' : 'hidden'} items-center justify-center cursor-pointer bg-gray-300 w-7 h-7 rounded`}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="w-3 fill-gray-500 rotate-180"
