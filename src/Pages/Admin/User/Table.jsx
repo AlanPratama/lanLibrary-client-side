@@ -75,13 +75,12 @@ export default function Table({ dataUser, setDataUser, meta }) {
     }
   };
 
-
-  const [menuModal, setMenuModal] = useState(false)
+  const [menuModal, setMenuModal] = useState(false);
   const [editUserModal, setEditUserModal] = useState(false);
-  const [editPassModal, setEditPassModal] = useState(false)
+  const [editPassModal, setEditPassModal] = useState(false);
 
-  const [delUserModal, setDelUserModal] = useState(false)
-  const [delUser, setDelUser] = useState([])
+  const [delUserModal, setDelUserModal] = useState(false);
+  const [delUser, setDelUser] = useState([]);
 
   const [userSlug, setUserSlug] = useState();
 
@@ -93,6 +92,11 @@ export default function Table({ dataUser, setDataUser, meta }) {
   const [position, setPosition] = useState();
   const [proPic, setProPic] = useState();
   const [previewImage, setPreviewImage] = useState(null);
+
+  // const [password, setPassword] = useState();
+  const [newPass, setNewPass] = useState();
+  const [confirmNewPass, setConfirmNewPass] = useState();
+  const [errorMsgPass, setErrorMsgPass] = useState()
 
   const handlePreviewImage = (e) => {
     const selectedFile = e.target.files[0];
@@ -160,6 +164,7 @@ export default function Table({ dataUser, setDataUser, meta }) {
         setPosition("");
         setProPic("");
         setPreviewImage(null);
+        setMenuModal(false);
         setEditUserModal(false);
         toast.success(response.data.message, {
           position: "top-center",
@@ -171,7 +176,25 @@ export default function Table({ dataUser, setDataUser, meta }) {
     }
   };
 
-  const handleEditUserModal = async (userSlug) => {
+  const handleMenuModal = async (userSlug) => {
+    if (!menuModal) {
+      console.log("lalalalla");
+      const response = await axios.get(
+        `http://localhost:8000/api/user/${userSlug}`,
+        {
+          withCredentials: true,
+        }
+      );
+
+      setUserSlug(response.data.data.slug);
+      setMenuModal(true);
+    } else {
+      setUserSlug("");
+      setMenuModal(false);
+    }
+  };
+
+  const handleEditUserModal = async () => {
     if (!editUserModal) {
       const response = await axios.get(
         `http://localhost:8000/api/user/${userSlug}`,
@@ -181,7 +204,6 @@ export default function Table({ dataUser, setDataUser, meta }) {
       );
 
       console.log(response.data.data);
-      setUserSlug(response.data.data.slug);
 
       setName(response.data.data.name);
       setEmail(response.data.data.email);
@@ -214,43 +236,95 @@ export default function Table({ dataUser, setDataUser, meta }) {
     }
   };
 
-  const handleDelUserModal = async (userSlug) => {
-    if (!delUserModal) {
-      const response = await axios.get(`http://localhost:8000/api/user/${userSlug}`, {
-        withCredentials: true
-      })
-
-      setDelUser(response.data.data)
-      setDelUserModal(true)
+  const handlePassModal = async () => {
+    if (!editPassModal) {
+      setEditPassModal(true);
     } else {
-      setDelUser([])
-      setDelUserModal(false)
+      setNewPass("")
+      setConfirmNewPass("")
+      setErrorMsgPass("")
+      setEditPassModal(false);
     }
-  }
+  };
 
-  const delUserSubmit = async (e) => {
-    e.preventDefault()
+  const handlePassSubmit = async (e) => {
+    e.preventDefault();
     try {
-      const response = await axios.delete(`http://localhost:8000/api/libManager/user/${delUser.slug}`, {
-        withCredentials: true
-      })
+      const response = await axios.post(
+        `http://localhost:8000/api/libManager/change-pass-user/${userSlug}`,
+        {
+          newPass: newPass,
+          confirmNewPass: confirmNewPass
+        },
+        {
+          withCredentials: true
+        }
+      );
 
       if (response.data.status == 'success') {
+          setErrorMsgPass("")
+          setNewPass("")
+          setConfirmNewPass("")
+          setMenuModal(false)
+          setEditPassModal(false)
+          toast.success(response.data.message, {
+            position: "top-center"
+          })
+      }
+
+    } catch (error) {
+      setErrorMsgPass(error.response.data.errors);
+    }
+  };
+
+  // DEL MODAL
+
+  const handleDelUserModal = async (userSlug) => {
+    if (!delUserModal) {
+      const response = await axios.get(
+        `http://localhost:8000/api/user/${userSlug}`,
+        {
+          withCredentials: true,
+        }
+      );
+
+      setDelUser(response.data.data);
+      setDelUserModal(true);
+    } else {
+      setDelUser([]);
+      setDelUserModal(false);
+    }
+  };
+
+  const delUserSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.delete(
+        `http://localhost:8000/api/libManager/user/${delUser.slug}`,
+        {
+          withCredentials: true,
+        }
+      );
+
+      if (response.data.status == "success") {
         console.log(response);
-        const res = await axios.get('http://localhost:8000/api/libManager/user', {
-          withCredentials: true
-        })
-        setDataUser(res.data.data.data)
-        setDelUser([])
-        setDelUserModal(false)
+        const res = await axios.get(
+          "http://localhost:8000/api/libManager/user",
+          {
+            withCredentials: true,
+          }
+        );
+        setDataUser(res.data.data.data);
+        setDelUser([]);
+        setDelUserModal(false);
         toast.success(response.data.message, {
-          position: "top-center"
-        })
+          position: "top-center",
+        });
       }
     } catch (error) {
       console.error(error);
     }
-  }
+  };
 
   return (
     <>
@@ -345,7 +419,7 @@ export default function Table({ dataUser, setDataUser, meta }) {
                             className="mr-4"
                             title="Edit"
                             onClick={() => {
-                              handleEditUserModal(data.slug);
+                              handleMenuModal(data.slug);
                             }}
                           >
                             <svg
@@ -363,7 +437,13 @@ export default function Table({ dataUser, setDataUser, meta }) {
                               />
                             </svg>
                           </button>
-                          <button className="mr-4" title="Delete" onClick={() => {handleDelUserModal(data.slug)}}>
+                          <button
+                            className="mr-4"
+                            title="Delete"
+                            onClick={() => {
+                              handleDelUserModal(data.slug);
+                            }}
+                          >
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
                               className="w-5 fill-red-500 hover:fill-red-700"
@@ -401,39 +481,38 @@ export default function Table({ dataUser, setDataUser, meta }) {
             <option>100</option>
           </select> */}
             <ul className="flex space-x-1 ml-2">
-              {
-                prev ? 
+              {prev ? (
                 <li
-                onClick={handlePrev}
-                className={`flex items-center justify-center cursor-pointer bg-gray-300 w-7 h-7 rounded`}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="w-3 fill-gray-500"
-                  viewBox="0 0 55.753 55.753"
+                  onClick={handlePrev}
+                  className={`flex items-center justify-center cursor-pointer bg-gray-300 w-7 h-7 rounded`}
                 >
-                  <path
-                    d="M12.745 23.915c.283-.282.59-.52.913-.727L35.266 1.581a5.4 5.4 0 0 1 7.637 7.638L24.294 27.828l18.705 18.706a5.4 5.4 0 0 1-7.636 7.637L13.658 32.464a5.367 5.367 0 0 1-.913-.727 5.367 5.367 0 0 1-1.572-3.911 5.369 5.369 0 0 1 1.572-3.911z"
-                    data-original="#000000"
-                  />
-                </svg>
-              </li>
-              :
-              <li
-                className={`flex items-center justify-center cursor-not-allowed bg-gray-100 w-7 h-7 rounded`}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="w-3 fill-gray-500"
-                  viewBox="0 0 55.753 55.753"
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="w-3 fill-gray-500"
+                    viewBox="0 0 55.753 55.753"
+                  >
+                    <path
+                      d="M12.745 23.915c.283-.282.59-.52.913-.727L35.266 1.581a5.4 5.4 0 0 1 7.637 7.638L24.294 27.828l18.705 18.706a5.4 5.4 0 0 1-7.636 7.637L13.658 32.464a5.367 5.367 0 0 1-.913-.727 5.367 5.367 0 0 1-1.572-3.911 5.369 5.369 0 0 1 1.572-3.911z"
+                      data-original="#000000"
+                    />
+                  </svg>
+                </li>
+              ) : (
+                <li
+                  className={`flex items-center justify-center cursor-not-allowed bg-gray-100 w-7 h-7 rounded`}
                 >
-                  <path
-                    d="M12.745 23.915c.283-.282.59-.52.913-.727L35.266 1.581a5.4 5.4 0 0 1 7.637 7.638L24.294 27.828l18.705 18.706a5.4 5.4 0 0 1-7.636 7.637L13.658 32.464a5.367 5.367 0 0 1-.913-.727 5.367 5.367 0 0 1-1.572-3.911 5.369 5.369 0 0 1 1.572-3.911z"
-                    data-original="#000000"
-                  />
-                </svg>
-              </li>
-              }
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="w-3 fill-gray-500"
+                    viewBox="0 0 55.753 55.753"
+                  >
+                    <path
+                      d="M12.745 23.915c.283-.282.59-.52.913-.727L35.266 1.581a5.4 5.4 0 0 1 7.637 7.638L24.294 27.828l18.705 18.706a5.4 5.4 0 0 1-7.636 7.637L13.658 32.464a5.367 5.367 0 0 1-.913-.727 5.367 5.367 0 0 1-1.572-3.911 5.369 5.369 0 0 1 1.572-3.911z"
+                      data-original="#000000"
+                    />
+                  </svg>
+                </li>
+              )}
               {/* <li className="flex items-center justify-center cursor-pointer text-sm w-7 h-7 rounded">
               1
             </li> */}
@@ -443,40 +522,82 @@ export default function Table({ dataUser, setDataUser, meta }) {
               {/* <li className="flex items-center justify-center cursor-pointer text-sm w-7 h-7 rounded">
               3
             </li> */}
-              {
-                next ? 
+              {next ? (
                 <li
-                onClick={handleNext}
-                className={`flex items-center justify-center cursor-pointer bg-gray-300 w-7 h-7 rounded`}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="w-3 fill-gray-500 rotate-180"
-                  viewBox="0 0 55.753 55.753"
+                  onClick={handleNext}
+                  className={`flex items-center justify-center cursor-pointer bg-gray-300 w-7 h-7 rounded`}
                 >
-                  <path
-                    d="M12.745 23.915c.283-.282.59-.52.913-.727L35.266 1.581a5.4 5.4 0 0 1 7.637 7.638L24.294 27.828l18.705 18.706a5.4 5.4 0 0 1-7.636 7.637L13.658 32.464a5.367 5.367 0 0 1-.913-.727 5.367 5.367 0 0 1-1.572-3.911 5.369 5.369 0 0 1 1.572-3.911z"
-                    data-original="#000000"
-                  />
-                </svg>
-              </li>
-              :
-              <li
-                className={`flex items-center justify-center cursor-not-allowed bg-gray-100 w-7 h-7 rounded`}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="w-3 fill-gray-500 rotate-180"
-                  viewBox="0 0 55.753 55.753"
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="w-3 fill-gray-500 rotate-180"
+                    viewBox="0 0 55.753 55.753"
+                  >
+                    <path
+                      d="M12.745 23.915c.283-.282.59-.52.913-.727L35.266 1.581a5.4 5.4 0 0 1 7.637 7.638L24.294 27.828l18.705 18.706a5.4 5.4 0 0 1-7.636 7.637L13.658 32.464a5.367 5.367 0 0 1-.913-.727 5.367 5.367 0 0 1-1.572-3.911 5.369 5.369 0 0 1 1.572-3.911z"
+                      data-original="#000000"
+                    />
+                  </svg>
+                </li>
+              ) : (
+                <li
+                  className={`flex items-center justify-center cursor-not-allowed bg-gray-100 w-7 h-7 rounded`}
                 >
-                  <path
-                    d="M12.745 23.915c.283-.282.59-.52.913-.727L35.266 1.581a5.4 5.4 0 0 1 7.637 7.638L24.294 27.828l18.705 18.706a5.4 5.4 0 0 1-7.636 7.637L13.658 32.464a5.367 5.367 0 0 1-.913-.727 5.367 5.367 0 0 1-1.572-3.911 5.369 5.369 0 0 1 1.572-3.911z"
-                    data-original="#000000"
-                  />
-                </svg>
-              </li>
-              }
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="w-3 fill-gray-500 rotate-180"
+                    viewBox="0 0 55.753 55.753"
+                  >
+                    <path
+                      d="M12.745 23.915c.283-.282.59-.52.913-.727L35.266 1.581a5.4 5.4 0 0 1 7.637 7.638L24.294 27.828l18.705 18.706a5.4 5.4 0 0 1-7.636 7.637L13.658 32.464a5.367 5.367 0 0 1-.913-.727 5.367 5.367 0 0 1-1.572-3.911 5.369 5.369 0 0 1 1.572-3.911z"
+                      data-original="#000000"
+                    />
+                  </svg>
+                </li>
+              )}
             </ul>
+          </div>
+        </div>
+      </div>
+
+      <div
+        className={`${
+          !menuModal ? "hidden" : ""
+        }  l transition-all min-h-screen h-auto overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 max-h-full`}
+      >
+        <div className="relative w-full flex justify-center items-center h-full">
+          <div className="max-w-4xl max-h-full rounded-lg bg-white p-8 shadow-lg lg:col-span-3 lg:p-12">
+            <div
+              className="space-y-4 flex flex-col justify-center items-center"
+              // onSubmit={editBookSubmit}
+            >
+              <h3 className="text-xl text-deep-purple-accent-400 font-medium">
+                Apakah Kamu Yakin Akan Menghapus User Ini?
+              </h3>
+
+              <div className="mt-4">
+                <button
+                  onClick={handleEditUserModal}
+                  type="button"
+                  className="inline-block w-full rounded bg-red-500 px-3 py-1.5 font-medium text-white sm:w-auto"
+                >
+                  Edit
+                </button>
+                <button
+                  onClick={handlePassModal}
+                  type="button"
+                  className="inline-block w-full rounded bg-white border border-deep-purple-accent-400 px-3 py-1.5 font-medium text-deep-purple-accent-400 ml-2 sm:w-auto"
+                >
+                  Pass
+                </button>
+                <button
+                  onClick={handleMenuModal}
+                  type="button"
+                  className="inline-block w-full rounded bg-white border border-deep-purple-accent-400 px-3 py-1.5 font-medium text-deep-purple-accent-400 ml-2 sm:w-auto"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -616,6 +737,86 @@ export default function Table({ dataUser, setDataUser, meta }) {
                 </button>
                 <button
                   onClick={handleEditUserModal}
+                  type="button"
+                  className="inline-block w-full rounded bg-white border border-deep-purple-accent-400 px-3 py-1.5 font-medium text-deep-purple-accent-400 ml-2 sm:w-auto"
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div
+        className={`${
+          !editPassModal ? "hidden" : ""
+        }  l transition-all min-h-screen h-auto overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 max-h-full`}
+      >
+        <div className="relative w-full flex justify-center items-center h-full">
+          <div className="max-w-4xl max-h-full rounded-lg bg-white p-8 shadow-lg lg:col-span-3 lg:p-12">
+            {
+              errorMsgPass ? errorMsgPass.newPass.map(error => {
+                return (
+                  <>
+                    <p className="text-lg font-medium text-red-500 mb-2">*{error}</p>
+                  </>
+                )
+              }) : ''
+            }
+            {
+              errorMsgPass ? errorMsgPass.confirmNewPass.map(error => {
+                return (
+                  <>
+                    <p className="text-lg font-medium text-red-500 mb-2">*{error}</p>
+                  </>
+                )
+              }) : ''
+            }
+            <form className="space-y-4" onSubmit={handlePassSubmit}>
+              <div className="grid grid-cols-1 gap-4 text-center sm:grid-cols-2">
+                <div>
+                  <label className="sr-only" htmlFor="new password">
+                    New Password
+                  </label>
+                  <input
+                    value={newPass}
+                    name="new password"
+                    onChange={(e) => {
+                      setNewPass(e.target.value);
+                    }}
+                    className="w-full rounded-lg border border-gray-300 p-3 text-sm"
+                    placeholder="New Password"
+                    type="password"
+                    id="new password"
+                  />
+                </div>
+                <div>
+                  <label className="sr-only" htmlFor="confirm new password">
+                    Confirm New Password
+                  </label>
+                  <input
+                    value={confirmNewPass}
+                    onChange={(e) => {
+                      setConfirmNewPass(e.target.value);
+                    }}
+                    className="w-full rounded-lg border border-gray-300 p-3 text-sm"
+                    placeholder="Confirm New Password"
+                    type="password"
+                    id="confirm new password"
+                  />
+                </div>
+              </div>
+
+              <div className="mt-4">
+                <button
+                  type="submit"
+                  className="inline-block w-full rounded bg-deep-purple-accent-400 px-3 py-1.5 font-medium text-white sm:w-auto"
+                >
+                  Submit
+                </button>
+                <button
+                  onClick={handlePassModal}
                   type="button"
                   className="inline-block w-full rounded bg-white border border-deep-purple-accent-400 px-3 py-1.5 font-medium text-deep-purple-accent-400 ml-2 sm:w-auto"
                 >
