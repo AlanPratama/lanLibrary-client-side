@@ -75,7 +75,14 @@ export default function Table({ dataUser, setDataUser, meta }) {
     }
   };
 
+
+  const [menuModal, setMenuModal] = useState(false)
   const [editUserModal, setEditUserModal] = useState(false);
+  const [editPassModal, setEditPassModal] = useState(false)
+
+  const [delUserModal, setDelUserModal] = useState(false)
+  const [delUser, setDelUser] = useState([])
+
   const [userSlug, setUserSlug] = useState();
 
   const [name, setName] = useState();
@@ -111,49 +118,6 @@ export default function Table({ dataUser, setDataUser, meta }) {
   ];
 
   const animatedComponents = makeAnimated();
-
-  const handleEditUserModal = async (userSlug) => {
-    if (!editUserModal) {
-      const response = await axios.get(
-        `http://localhost:8000/api/user/${userSlug}`,
-        {
-          withCredentials: true,
-        }
-      );
-
-      console.log(response.data.data);
-      setUserSlug(response.data.data.slug);
-
-      setName(response.data.data.name);
-      setEmail(response.data.data.email);
-      setPhone(response.data.data.phone);
-      setUsername(response.data.data.username);
-
-      setRole({
-        value: response.data.data.role,
-        label: response.data.data.role,
-      });
-      setPosition({
-        value: response.data.data.position,
-        label: response.data.data.position,
-      });
-
-      setProPic(response.data.data.proPic);
-
-      setEditUserModal(true);
-    } else {
-      setUserSlug("");
-      setName("");
-      setEmail("");
-      setPhone("");
-      setUsername("");
-      setRole("");
-      setPosition("");
-      setProPic("");
-      setPreviewImage(null);
-      setEditUserModal(false);
-    }
-  };
 
   const editUserSubmit = async (e) => {
     e.preventDefault();
@@ -206,6 +170,87 @@ export default function Table({ dataUser, setDataUser, meta }) {
       console.error(error);
     }
   };
+
+  const handleEditUserModal = async (userSlug) => {
+    if (!editUserModal) {
+      const response = await axios.get(
+        `http://localhost:8000/api/user/${userSlug}`,
+        {
+          withCredentials: true,
+        }
+      );
+
+      console.log(response.data.data);
+      setUserSlug(response.data.data.slug);
+
+      setName(response.data.data.name);
+      setEmail(response.data.data.email);
+      setPhone(response.data.data.phone);
+      setUsername(response.data.data.username);
+
+      setRole({
+        value: response.data.data.role,
+        label: response.data.data.role,
+      });
+      setPosition({
+        value: response.data.data.position,
+        label: response.data.data.position,
+      });
+
+      setProPic(response.data.data.proPic);
+
+      setEditUserModal(true);
+    } else {
+      setUserSlug("");
+      setName("");
+      setEmail("");
+      setPhone("");
+      setUsername("");
+      setRole("");
+      setPosition("");
+      setProPic("");
+      setPreviewImage(null);
+      setEditUserModal(false);
+    }
+  };
+
+  const handleDelUserModal = async (userSlug) => {
+    if (!delUserModal) {
+      const response = await axios.get(`http://localhost:8000/api/user/${userSlug}`, {
+        withCredentials: true
+      })
+
+      setDelUser(response.data.data)
+      setDelUserModal(true)
+    } else {
+      setDelUser([])
+      setDelUserModal(false)
+    }
+  }
+
+  const delUserSubmit = async (e) => {
+    e.preventDefault()
+    try {
+      const response = await axios.delete(`http://localhost:8000/api/libManager/user/${delUser.slug}`, {
+        withCredentials: true
+      })
+
+      if (response.data.status == 'success') {
+        console.log(response);
+        const res = await axios.get('http://localhost:8000/api/libManager/user', {
+          withCredentials: true
+        })
+        setDataUser(res.data.data.data)
+        setDelUser([])
+        setDelUserModal(false)
+        toast.success(response.data.message, {
+          position: "top-center"
+        })
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   return (
     <>
@@ -318,7 +363,7 @@ export default function Table({ dataUser, setDataUser, meta }) {
                               />
                             </svg>
                           </button>
-                          <button className="mr-4" title="Delete">
+                          <button className="mr-4" title="Delete" onClick={() => {handleDelUserModal(data.slug)}}>
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
                               className="w-5 fill-red-500 hover:fill-red-700"
@@ -539,6 +584,53 @@ export default function Table({ dataUser, setDataUser, meta }) {
                 </button>
                 <button
                   onClick={handleEditUserModal}
+                  type="button"
+                  className="inline-block w-full rounded bg-white border border-deep-purple-accent-400 px-3 py-1.5 font-medium text-deep-purple-accent-400 ml-2 sm:w-auto"
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div
+        className={`${
+          !delUserModal ? "hidden" : ""
+        }  l transition-all min-h-screen h-auto overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 max-h-full`}
+      >
+        <div className="relative w-full flex justify-center items-center h-full">
+          <div className="max-w-4xl max-h-full rounded-lg bg-white p-8 shadow-lg lg:col-span-3 lg:p-12">
+            <form
+              className="space-y-4 flex flex-col justify-center items-center"
+              // onSubmit={editBookSubmit}
+            >
+              <h3 className="text-xl text-deep-purple-accent-400 font-medium">
+                Apakah Kamu Yakin Akan Menghapus User Ini?
+              </h3>
+
+              <div className="w-full mt-4 flex justify-start items-start gap-3">
+                <img
+                  src={`http://localhost:8000${delUser.proPic}`}
+                  alt={delUser.proPic}
+                  className="shadow rounded min-w-36 max-w-36 min-h-36 max-h-36"
+                />
+                <div className="flex justify-start items-start flex-col">
+                  <h3 className="text-lg">{delUser.name}</h3>
+                </div>
+              </div>
+
+              <div className="mt-4">
+                <button
+                  onClick={delUserSubmit}
+                  type="submit"
+                  className="inline-block w-full rounded bg-red-500 px-3 py-1.5 font-medium text-white sm:w-auto"
+                >
+                  Hapus
+                </button>
+                <button
+                  onClick={handleDelUserModal}
                   type="button"
                   className="inline-block w-full rounded bg-white border border-deep-purple-accent-400 px-3 py-1.5 font-medium text-deep-purple-accent-400 ml-2 sm:w-auto"
                 >
