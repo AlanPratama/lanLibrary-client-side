@@ -5,10 +5,9 @@ import "react-toastify/dist/ReactToastify.css";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 
-export default function Table({ dataUser, setDataUser, meta }) {
+export default function Table({ dataUser, setDataUser, meta, setMeta, currentPage , setCurrentPage, }) {
   const [prev, setPrev] = useState(meta.prev_page_url);
   const [next, setNext] = useState(meta.next_page_url);
-  const [current, setCurrent] = useState(meta.current_page);
   const [info, setInfo] = useState({
     show: meta.per_page,
     last: meta.last_page,
@@ -17,10 +16,11 @@ export default function Table({ dataUser, setDataUser, meta }) {
   const handlePrev = async () => {
     try {
       const response = await axios.get(prev, { withCredentials: true });
+      setMeta(response.data.data)
       setDataUser(response.data.data.data);
       setPrev(response.data.data.prev_page_url);
       setNext(response.data.data.next_page_url);
-      setCurrent(response.data.data.current_page);
+      setCurrentPage(response.data.data.current_page);
       setInfo({
         show: response.data.data.data.length,
         last: response.data.data.last_page,
@@ -34,10 +34,11 @@ export default function Table({ dataUser, setDataUser, meta }) {
   const handleNext = async () => {
     try {
       const response = await axios.get(next, { withCredentials: true });
+      setMeta(response.data.data)
       setDataUser(response.data.data.data);
       setPrev(response.data.data.prev_page_url);
       setNext(response.data.data.next_page_url);
-      setCurrent(response.data.data.current_page);
+      setCurrentPage(response.data.data.current_page);
       setInfo({
         show: response.data.data.data.length,
         last: response.data.data.last_page,
@@ -145,7 +146,7 @@ export default function Table({ dataUser, setDataUser, meta }) {
 
       if (response.data.status == "success") {
         const res = await axios.get(
-          `http://localhost:8000/api/libManager/user?page=${current}`,
+          `http://localhost:8000/api/libManager/user?page=${currentPage}`,
           {
             withCredentials: true,
           }
@@ -305,7 +306,7 @@ export default function Table({ dataUser, setDataUser, meta }) {
       if (response.data.status == "success") {
         console.log(response);
         const res = await axios.get(
-          `http://localhost:8000/api/libManager/user?page=${current}`,
+          `http://localhost:8000/api/libManager/user?page=${currentPage}`,
           {
             withCredentials: true,
           }
@@ -349,7 +350,7 @@ export default function Table({ dataUser, setDataUser, meta }) {
           <tbody className="whitespace-nowrap">
             {dataUser
               ? dataUser.map((data, i) => {
-                const number = i + (current - 1) * info.show + 1
+                const number = i + (currentPage - 1) * info.show + 1
                   return (
                     <>
                       <tr className="" key={data.slug}>
@@ -513,7 +514,7 @@ export default function Table({ dataUser, setDataUser, meta }) {
               1
             </li> */}
               <li className="flex items-center justify-center cursor-pointer text-sm bg-[#007bff] text-white w-7 h-7 rounded">
-                {current}
+                {currentPage}
               </li>
               {/* <li className="flex items-center justify-center cursor-pointer text-sm w-7 h-7 rounded">
               3
