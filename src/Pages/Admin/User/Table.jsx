@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
@@ -94,7 +94,7 @@ export default function Table({ dataUser, setDataUser, meta }) {
   // const [password, setPassword] = useState();
   const [newPass, setNewPass] = useState();
   const [confirmNewPass, setConfirmNewPass] = useState();
-  const [errorMsgPass, setErrorMsgPass] = useState()
+  const [errorMsgPass, setErrorMsgPass] = useState();
 
   const handlePreviewImage = (e) => {
     const selectedFile = e.target.files[0];
@@ -145,7 +145,7 @@ export default function Table({ dataUser, setDataUser, meta }) {
 
       if (response.data.status == "success") {
         const res = await axios.get(
-          "http://localhost:8000/api/libManager/user",
+          `http://localhost:8000/api/libManager/user?page=${current}`,
           {
             withCredentials: true,
           }
@@ -176,7 +176,6 @@ export default function Table({ dataUser, setDataUser, meta }) {
 
   const handleMenuModal = async (userSlug) => {
     if (!menuModal) {
-      console.log("lalalalla");
       const response = await axios.get(
         `http://localhost:8000/api/user/${userSlug}`,
         {
@@ -238,9 +237,9 @@ export default function Table({ dataUser, setDataUser, meta }) {
     if (!editPassModal) {
       setEditPassModal(true);
     } else {
-      setNewPass("")
-      setConfirmNewPass("")
-      setErrorMsgPass("")
+      setNewPass("");
+      setConfirmNewPass("");
+      setErrorMsgPass("");
       setEditPassModal(false);
     }
   };
@@ -252,24 +251,23 @@ export default function Table({ dataUser, setDataUser, meta }) {
         `http://localhost:8000/api/libManager/change-pass-user/${userSlug}`,
         {
           newPass: newPass,
-          confirmNewPass: confirmNewPass
+          confirmNewPass: confirmNewPass,
         },
         {
-          withCredentials: true
+          withCredentials: true,
         }
       );
 
-      if (response.data.status == 'success') {
-          setErrorMsgPass("")
-          setNewPass("")
-          setConfirmNewPass("")
-          setMenuModal(false)
-          setEditPassModal(false)
-          toast.success(response.data.message, {
-            position: "top-center"
-          })
+      if (response.data.status == "success") {
+        setErrorMsgPass("");
+        setNewPass("");
+        setConfirmNewPass("");
+        setMenuModal(false);
+        setEditPassModal(false);
+        toast.success(response.data.message, {
+          position: "top-center",
+        });
       }
-
     } catch (error) {
       setErrorMsgPass(error.response.data.errors);
     }
@@ -307,7 +305,7 @@ export default function Table({ dataUser, setDataUser, meta }) {
       if (response.data.status == "success") {
         console.log(response);
         const res = await axios.get(
-          "http://localhost:8000/api/libManager/user",
+          `http://localhost:8000/api/libManager/user?page=${current}`,
           {
             withCredentials: true,
           }
@@ -327,7 +325,6 @@ export default function Table({ dataUser, setDataUser, meta }) {
   return (
     <>
       <div className="overflow-x-auto min-w-full py-8">
-        <ToastContainer />
         <table className="min-w-full  bg-white font-[sans-serif]">
           <thead className="bg-gray-100 whitespace-nowrap">
             <tr>
@@ -352,10 +349,11 @@ export default function Table({ dataUser, setDataUser, meta }) {
           <tbody className="whitespace-nowrap">
             {dataUser
               ? dataUser.map((data, i) => {
+                const number = i + (current - 1) * info.show + 1
                   return (
                     <>
                       <tr className="" key={data.slug}>
-                        <td className="pl-6 w-8">{i + 1}</td>
+                        <td className="pl-6 w-8">{number}</td>
                         <td className="px-6 py-3 text-sm">
                           <div className="flex items-center cursor-pointer">
                             <img
@@ -753,24 +751,26 @@ export default function Table({ dataUser, setDataUser, meta }) {
       >
         <div className="relative w-full flex justify-center items-center h-full">
           <div className="max-w-4xl max-h-full rounded-lg bg-white p-8 shadow-lg lg:col-span-3 lg:p-12">
-            {
-              errorMsgPass ? errorMsgPass.newPass.map(error => {
-                return (
-                  <>
-                    <p className="text-lg font-medium text-red-500 mb-2">*{error}</p>
-                  </>
-                )
-              }) : ''
-            }
-            {
-              errorMsgPass ? errorMsgPass.confirmNewPass.map(error => {
-                return (
-                  <>
-                    <p className="text-lg font-medium text-red-500 mb-2">*{error}</p>
-                  </>
-                )
-              }) : ''
-            }
+            {errorMsgPass && (
+              <>
+                {errorMsgPass.newPass.map((error) => {
+                  <p
+                    key={error}
+                    className="text-lg font-medium text-red-500 mb-2"
+                  >
+                    *{error}
+                  </p>;
+                })}
+                {errorMsgPass.confirmNewPass.map((error) => {
+                  <p
+                    key={error}
+                    className="text-lg font-medium text-red-500 mb-2"
+                  >
+                    *{error}
+                  </p>;
+                })}
+              </>
+            )}
             <form className="space-y-4" onSubmit={handlePassSubmit}>
               <div className="grid grid-cols-1 gap-4 text-center sm:grid-cols-2">
                 <div>

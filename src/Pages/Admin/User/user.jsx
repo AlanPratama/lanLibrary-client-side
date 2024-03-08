@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react'
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import axios from "axios"
 import Table from './Table'
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
+import ErrorMsg from './ErrorMsg';
 
 export default function User() {
   const [dataUser, setDataUser] = useState([])
@@ -24,6 +27,21 @@ export default function User() {
     }
   })()
   }, [])
+  
+  const lala = async () => {
+    try {
+      const response = await axios.get('http://localhost:8000/api/libManager/user', {
+        withCredentials: true
+      })
+
+      console.log(response);
+      setDataUser(response.data.data.data)
+      setMeta(response.data.data)
+
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
 
   const [addUserModal, setAddUserModal] = useState()
@@ -35,6 +53,8 @@ export default function User() {
       setAddUserModal(false)
     }
   }
+
+  const [errMessage, setErrMessage] = useState([])
 
   const [nameAdd, setNameAdd] = useState();
   const [emailAdd, setEmailAdd] = useState();
@@ -82,24 +102,43 @@ export default function User() {
       formData.append('username', usernameAdd)
       formData.append('password', passwordAdd)
       formData.append('confirmPassword', confirmPasswordAdd)
-      formData.append('role', role.value)
-      formData.append('position', position.value)
+      formData.append('role', roleAdd.value)
+      formData.append('position', positionAdd.value)
       formData.append('proPic', proPicAdd)
 
       const response = await axios.post('http://localhost:8000/api/libManager/user', formData, {
         withCredentials: true
       })
 
-      console.log(response.data);
+        setAddUserModal(false)
 
+        setNameAdd("")
+        setEmailAdd("")
+        setPhoneAdd("")
+        setRoleAdd([])
+        setPositionAdd([])
+        setUsernameAdd("")
+        setPasswordAdd("")
+        setConfirmPasswordAdd("")
+        setProPicAdd("")
+        
+        toast.success(response.data.message, {
+          position: "top-center"
+        })
+
+        setErrMessage("")
+        
+        lala()
+        setAddUserModal(false)
 
     } catch (error) {
-      console.error(error);
+      setErrMessage(error.response.data.message);
     }
   }
 
   return (
     <>
+        <ToastContainer />
       {
         meta ? (
           <>
@@ -179,6 +218,14 @@ export default function User() {
       >
         <div className="relative w-full flex justify-center items-center h-full">
           <div className="max-w-4xl max-h-full rounded-lg bg-white p-8 shadow-lg lg:col-span-3 lg:p-12">
+
+            {
+  errMessage && (
+    <ErrorMsg errMessage={errMessage}/>
+  )
+}
+
+
             <form className="space-y-4" onSubmit={addUserSubmit}>
               <div className="grid grid-cols-1 gap-4 text-center sm:grid-cols-3">
                 <div>
