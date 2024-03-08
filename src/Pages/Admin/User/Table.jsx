@@ -59,8 +59,6 @@ export default function Table({ dataUser, setDataUser, meta }) {
         }
       );
 
-      // console.log(response.data.data);
-
       if (response.data.status == "success") {
         toast.success(response.data.message, {
           position: "top-center",
