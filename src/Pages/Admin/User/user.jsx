@@ -10,7 +10,7 @@ import ErrorMsg from "./ErrorMsg";
 export default function User() {
   const [dataUser, setDataUser] = useState([]);
   const [meta, setMeta] = useState();
-  const [currentPage, setCurrentPage] = useState();
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     (async () => {
