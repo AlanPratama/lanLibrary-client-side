@@ -109,6 +109,21 @@ export default function AdminLayout({ children, bgMenu, setAuth, setUser}) {
         <i className="fa-solid fa-book"></i>
         <span className="text-[15px] ml-4 font-bold">Book</span>
       </Link>
+
+      <Link to={"/admin/type"}
+        className={`p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer ${bgMenu == 'type' ? 'bg-deep-purple-accent-400 text-white' : 'hover:text-deep-purple-400 text-gray-700'}`}
+      >
+        <i className="fa-solid fa-book"></i>
+        <span className="text-[15px] ml-4 font-bold">Type</span>
+      </Link>
+
+      <Link to={"/admin/category"}
+        className={`p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer ${bgMenu == 'category' ? 'bg-deep-purple-accent-400 text-white' : 'hover:text-deep-purple-400 text-gray-700'}`}
+      >
+        <i className="fa-solid fa-book"></i>
+        <span className="text-[15px] ml-4 font-bold">Category</span>
+      </Link>
+
       <Link to={"/admin/users"}
         className={`p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer ${bgMenu == 'users' ? 'bg-deep-purple-accent-400 text-white' : 'hover:text-deep-purple-400 text-gray-700'}`}
       >

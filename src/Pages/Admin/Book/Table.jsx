@@ -64,15 +64,22 @@ export default function TableBook({
 
       const data = response.data.data;
 
-      const bookCategories = data.categories.map((category) => ({
-        value: category.id,
-        label: category.name,
-      }));
+      
 
       setBookSLug(data.slug);
-      setWriterE({ value: data.writers.id, label: data.writers.name });
-      setTypeE({ value: data.types.id, label: data.types.name });
-      setCategoryE(bookCategories);
+      if (data.writers) {
+        setWriterE({ value: data.writers.id, label: data.writers.name });
+      }
+      if (data.types) {
+        setTypeE({ value: data.types.id, label: data.types.name });
+      }
+      if (data.categories) {
+        const bookCategories = data.categories.map((category) => ({
+          value: category.id,
+          label: category.name,
+        }));
+        setCategoryE(bookCategories);
+      }
       setTotalBookE(data.total_book);
       setTitleE(data.title);
       setPublisherE(data.publisher);
@@ -260,11 +267,11 @@ export default function TableBook({
                         />
                         <div className="ml-4">
                           <p className="text-sm text-black">{book.title}</p>
-                          <p className="text-sm text-gray-400">
-                            {book.writers.name}
+                          <p className={`text-sm textgr4`}>
+                            {book.writers ? book.writers.name : "NULL"}
                           </p>
-                          <button className="px-1 py-0.5 mt-1 text-xs text-deep-purple-accent-400 border border-deep-purple-accent-400">
-                            {book.types.name}
+                          <button className={`px-1 py-0.5 mt-1 text-xs ${ book.types ? 'text-deep-purple-accent-400 border border-deep-purple-accent-400' : 'text-gray-600 border border-gray-600' }`}>
+                            {book.types ? book.types.name : "NULL"}
                           </button>
                           <i className="fa-solid fa-star mx-1 text-xs text-orange-600"></i>
                           <span className="text-xs">(4.9)</span>

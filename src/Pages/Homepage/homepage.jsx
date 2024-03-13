@@ -1,8 +1,6 @@
-import Cta from "../Components/Fragments/Cta";
-import { Header } from "../Components/Header";
-import UserLayout from "../Layouts/UserLayout";
-import "../homepage.css";
-import BookWithFilter from "./Admin/Book/bookWithFilter";
+import { Header } from "../../Components/Header";
+import "../../homepage.css";
+import BookWithFilter from "./bookWithFilter";
 import ScrollCarousel from "scroll-carousel-react";
 
 export default function homepage({}) {

@@ -1,7 +1,25 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 export default function BookWithFilter() {
+  const url = "http://localhost:8000";
+  const [book, setBook] = useState([]);
+  const getBook = async () => {
+    try {
+      const res = await axios.get(`${url}/api/getBooks?paginate=12`, {
+        withCredentials: true,
+      });
+
+      setBook(res.data.data.data);
+      console.log(book);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  useEffect(() => {
+    getBook();
+  }, []);
   return (
     <div>
       <h1 className="text-center font-bold text-gray-800 text-5xl pt-10">
@@ -301,275 +319,53 @@ export default function BookWithFilter() {
             {/* END FILTER */}
             <div className="w-full md:px-3 px-0 lg:w-3/4 lg:mt-0 mt-6">
               <div className="flex flex-wrap items-start ">
-                <div className="md:px-3 px-1 mb-6 w-1/2 md:w-1/3 lg:w-[250px]">
-                  {/* CARD START */}
-                  <div className="border border-gray-300">
-                    <div className="relative bg-gray-200">
-                      <Link to={"/book-detail/slug"} className="">
-                        <img
-                          src="http://localhost:8000/assets/Ayah_20231205.jpg"
-                          alt=""
-                          className="h-auto sm:h-[300px] mx-auto "
-                        />
+                {book &&
+                  book.map((book, i) => {
+                    return (
+                      <Link to={`/book-detail/${book.slug}`} key={i+1} className="md:px-3 px-1 mb-6 w-1/2 md:w-1/3 lg:w-[250px]">
+                        {/* CARD START */}
+                        <div className="border border-gray-300">
+                          <div className="relative bg-gray-200">
+                              <img
+                                src={url + book.cover}                                
+                                alt={book.title}
+                                className="object-cover h-auto sm:h-[300px] mx-auto "
+                              />
+                          </div>
+                          <div className="p-3 sm:block hidden">
+                            <div className="flex items-center justify-between gap-2 mb-2">
+                              <h3 className="text-xl text-gray-700 font-semibold">
+                                {book.title}
+                              </h3>
+                              {/* <div className="flex">
+                                  TYPE BOOK
+                              </div> */}
+                            </div>
+                            <p className="text-lg ">
+                              <span className="">{book.types.name} | {book.writers.name}</span>
+                            </p>
+                          </div>
+                          <div className="flex justify-evenly items-center border-t border-gray-300">
+                            <a
+                              href="#"
+                              className="text-2xl py-3 flex justify-center items-center transition-all w-1/2 text-gray-500 hover:text-red-500"
+                            >
+                              <i className="fa-regular fa-heart"></i>
+                              {/* <i className="fa-solid fa-heart"></i> */}
+                            </a>
+                            {/* <span className="text-xl text-gray-600">|</span> */}
+                            <a
+                              href="#"
+                              className="text-2xl text-medium py-3 flex justify-center items-center transition-all w-1/2  text-deep-purple-accent-400"
+                            >
+                              20
+                              {/* <i className="fa-solid fa-users"></i> */}
+                            </a>
+                          </div>
+                        </div>
                       </Link>
-                    </div>
-                    <div className="p-3 sm:block hidden">
-                      <div className="flex items-center justify-between gap-2 mb-2">
-                        <h3 className="text-xl text-gray-700 font-semibold">
-                          Book name
-                        </h3>
-                        {/* <div className="flex">
-                            TYPE BOOK
-                        </div> */}
-                      </div>
-                      <p className="text-lg ">
-                        <span className="">Type Book | Author Name</span>
-                      </p>
-                    </div>
-                    <div className="flex justify-evenly items-center border-t border-gray-300">
-                      <a
-                        href="#"
-                        className="text-2xl py-3 flex justify-center items-center transition-all w-1/2 text-gray-500 hover:text-red-500"
-                      >
-                        <i className="fa-regular fa-heart"></i>
-                        {/* <i className="fa-solid fa-heart"></i> */}
-                      </a>
-                      {/* <span className="text-xl text-gray-600">|</span> */}
-                      <a
-                        href="#"
-                        className="text-2xl text-medium py-3 flex justify-center items-center transition-all w-1/2  text-deep-purple-accent-400"
-                      >
-                        20
-                        {/* <i className="fa-solid fa-users"></i> */}
-                      </a>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="md:px-3 px-1 mb-6 w-1/2 md:w-1/3 lg:w-[250px]">
-                  {/* CARD START */}
-                  <div className="border border-gray-300">
-                    <div className="relative bg-gray-200">
-                      <a href="#" className="">
-                        <img
-                          src="http://localhost:8000/assets/Ayah_20231205.jpg"
-                          alt=""
-                          className="object-cover h-auto sm:h-[300px] mx-auto "
-                        />
-                      </a>
-                    </div>
-                    <div className="p-3 sm:block hidden">
-                      <div className="flex items-center justify-between gap-2 mb-2">
-                        <h3 className="text-xl text-gray-700 font-semibold">
-                          Book name
-                        </h3>
-                        {/* <div className="flex">
-        TYPE BOOK
-    </div> */}
-                      </div>
-                      <p className="text-lg ">
-                        <span className="">Type Book | Author Name</span>
-                      </p>
-                    </div>
-                    <div className="flex justify-evenly items-center border-t border-gray-300">
-                      <a
-                        href="#"
-                        className="text-2xl py-3 flex justify-center items-center transition-all w-1/2 text-gray-500 hover:text-red-500"
-                      >
-                        <i className="fa-regular fa-heart"></i>
-                        {/* <i className="fa-solid fa-heart"></i> */}
-                      </a>
-                      {/* <span className="text-xl text-gray-600">|</span> */}
-                      <a
-                        href="#"
-                        className="text-2xl text-medium py-3 flex justify-center items-center transition-all w-1/2  text-deep-purple-accent-400"
-                      >
-                        20
-                        {/* <i className="fa-solid fa-users"></i> */}
-                      </a>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="md:px-3 px-1 mb-6 w-1/2 md:w-1/3 lg:w-[250px]">
-                  {/* CARD START */}
-                  <div className="border border-gray-300">
-                    <div className="relative bg-gray-200">
-                      <a href="#" className="">
-                        <img
-                          src="http://localhost:8000/assets/Ayah_20231205.jpg"
-                          alt=""
-                          className="object-cover h-auto sm:h-[300px] mx-auto "
-                        />
-                      </a>
-                    </div>
-                    <div className="p-3 sm:block hidden">
-                      <div className="flex items-center justify-between gap-2 mb-2">
-                        <h3 className="text-xl text-gray-700 font-semibold">
-                          Book name
-                        </h3>
-                        {/* <div className="flex">
-                            TYPE BOOK
-                        </div> */}
-                      </div>
-                      <p className="text-lg ">
-                        <span className="">Type Book | Author Name</span>
-                      </p>
-                    </div>
-                    <div className="flex justify-evenly items-center border-t border-gray-300">
-                      <a
-                        href="#"
-                        className="text-2xl py-3 flex justify-center items-center transition-all w-1/2 text-gray-500 hover:text-red-500"
-                      >
-                        <i className="fa-regular fa-heart"></i>
-                        {/* <i className="fa-solid fa-heart"></i> */}
-                      </a>
-                      {/* <span className="text-xl text-gray-600">|</span> */}
-                      <a
-                        href="#"
-                        className="text-2xl text-medium py-3 flex justify-center items-center transition-all w-1/2  text-deep-purple-accent-400"
-                      >
-                        20
-                        {/* <i className="fa-solid fa-users"></i> */}
-                      </a>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="md:px-3 px-1 mb-6 w-1/2 md:w-1/3 lg:w-[250px]">
-                  {/* CARD START */}
-                  <div className="border border-gray-300">
-                    <div className="relative bg-gray-200">
-                      <a href="#" className="">
-                        <img
-                          src="http://localhost:8000/assets/Ayah_20231205.jpg"
-                          alt=""
-                          className="object-cover h-auto sm:h-[300px] mx-auto "
-                        />
-                      </a>
-                    </div>
-                    <div className="p-3 sm:block hidden">
-                      <div className="flex items-center justify-between gap-2 mb-2">
-                        <h3 className="text-xl text-gray-700 font-semibold">
-                          Book name
-                        </h3>
-                        {/* <div className="flex">
-                            TYPE BOOK
-                        </div> */}
-                      </div>
-                      <p className="text-lg ">
-                        <span className="">Type Book | Author Name</span>
-                      </p>
-                    </div>
-                    <div className="flex justify-evenly items-center border-t border-gray-300">
-                      <a
-                        href="#"
-                        className="text-2xl py-3 flex justify-center items-center transition-all w-1/2 text-gray-500 hover:text-red-500"
-                      >
-                        <i className="fa-regular fa-heart"></i>
-                        {/* <i className="fa-solid fa-heart"></i> */}
-                      </a>
-                      {/* <span className="text-xl text-gray-600">|</span> */}
-                      <a
-                        href="#"
-                        className="text-2xl text-medium py-3 flex justify-center items-center transition-all w-1/2  text-deep-purple-accent-400"
-                      >
-                        20
-                        {/* <i className="fa-solid fa-users"></i> */}
-                      </a>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="md:px-3 px-1 mb-6 w-1/2 md:w-1/3 lg:w-[250px]">
-                  {/* CARD START */}
-                  <div className="border border-gray-300">
-                    <div className="relative bg-gray-200">
-                      <a href="#" className="">
-                        <img
-                          src="http://localhost:8000/assets/Ayah_20231205.jpg"
-                          alt=""
-                          className="object-cover h-auto sm:h-[300px] mx-auto "
-                        />
-                      </a>
-                    </div>
-                    <div className="p-3 sm:block hidden">
-                      <div className="flex items-center justify-between gap-2 mb-2">
-                        <h3 className="text-xl text-gray-700 font-semibold">
-                          Book name
-                        </h3>
-                        {/* <div className="flex">
-                            TYPE BOOK
-                        </div> */}
-                      </div>
-                      <p className="text-lg ">
-                        <span className="">Type Book | Author Name</span>
-                      </p>
-                    </div>
-                    <div className="flex justify-evenly items-center border-t border-gray-300">
-                      <a
-                        href="#"
-                        className="text-2xl py-3 flex justify-center items-center transition-all w-1/2 text-gray-500 hover:text-red-500"
-                      >
-                        <i className="fa-regular fa-heart"></i>
-                        {/* <i className="fa-solid fa-heart"></i> */}
-                      </a>
-                      {/* <span className="text-xl text-gray-600">|</span> */}
-                      <a
-                        href="#"
-                        className="text-2xl text-medium py-3 flex justify-center items-center transition-all w-1/2  text-deep-purple-accent-400"
-                      >
-                        20
-                        {/* <i className="fa-solid fa-users"></i> */}
-                      </a>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="md:px-3 px-1 mb-6 w-1/2 md:w-1/3 lg:w-[250px]">
-                  {/* CARD START */}
-                  <div className="border border-gray-300">
-                    <div className="relative bg-gray-200">
-                      <a href="#" className="">
-                        <img
-                          src="http://localhost:8000/assets/Ayah_20231205.jpg"
-                          alt=""
-                          className="object-cover h-auto sm:h-[300px] mx-auto "
-                        />
-                      </a>
-                    </div>
-                    <div className="p-3 sm:block hidden">
-                      <div className="flex items-center justify-between gap-2 mb-2">
-                        <h3 className="text-xl text-gray-700 font-semibold">
-                          Book name
-                        </h3>
-                        {/* <div className="flex">
-                            TYPE BOOK
-                        </div> */}
-                      </div>
-                      <p className="text-lg ">
-                        <span className="">Type Book | Author Name</span>
-                      </p>
-                    </div>
-                    <div className="flex justify-evenly items-center border-t border-gray-300">
-                      <a
-                        href="#"
-                        className="text-2xl py-3 flex justify-center items-center transition-all w-1/2 text-gray-500 hover:text-red-500"
-                      >
-                        <i className="fa-regular fa-heart"></i>
-                        {/* <i className="fa-solid fa-heart"></i> */}
-                      </a>
-                      {/* <span className="text-xl text-gray-600">|</span> */}
-                      <a
-                        href="#"
-                        className="text-2xl text-medium py-3 flex justify-center items-center transition-all w-1/2  text-deep-purple-accent-400"
-                      >
-                        20
-                        {/* <i className="fa-solid fa-users"></i> */}
-                      </a>
-                    </div>
-                  </div>
-                </div>
+                    );
+                  })}
               </div>
               <div className="flex justify-end mt-6">
                 <nav aria-label="page-navigation">

@@ -1,9 +1,30 @@
 import React, { useEffect, useState } from "react";
 import UserLayout from "../../Layouts/UserLayout";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import Spinner from "../Loader/Spinner";
+import axios from "axios";
 
-export default function BookDetail() {
+export default function BookDetail({  }) {
+  const url = 'http://localhost:8000'
+  let { slug } = useParams()
+
+  const [book, setBook] = useState()
+
+  const getDetailBook = async () => {
+    const res = await axios.get(`${url}/api/book/${slug}`, {
+      withCredentials: true
+    })
+
+    setBook(res.data.data)
+    console.log(res.data.data);
+  } 
+
+  useEffect(() => {
+    (async () => {
+      await getDetailBook()
+    })()
+  }, [])
+
   function ScrollToTopOnNavigate({}) {
     const { pathname } = useLocation();
     const [loading, setLoading] = useState(true);
@@ -50,10 +71,11 @@ export default function BookDetail() {
               <div className="lg:pl-20">
                 <div className="mb-6 ">
                   <span className="px-2 py-1.5 text-xs text-white bg-deep-purple-accent-400 rounded-sm">
-                    Type Book
+                    {book.types ? book.types.name : ''}
                   </span>
+                  <span> {book.total_loan}x dipinjam</span>
                   <h2 className="max-w-xl mt-6 mb-6 text-xl font-semibold leading-loose tracking-wide text-gray-800 md:text-2xl">
-                    Ayah: Nak Lihat Bulan Yang Ada Disana
+                    {book.title}
                   </h2>
                   <div className="flex flex-wrap items-center mb-6">
                     <ul className="flex mb-4 mr-2 lg:mb-0">
@@ -89,33 +111,33 @@ export default function BookDetail() {
                 </div>
                 <div className="mb-3 flex items-center gap-2">
                   <h2 className="text-lg font-bold text-gray-700">Author :</h2>
-                  <p>Alan Pratama</p>
+                  <p>{book.writers ? book.writers.name : ''}</p>
                 </div>
 
                 <div className="mb-3 flex items-center gap-2">
                   <h2 className="text-lg font-bold text-gray-700">
                     Year Release :
                   </h2>
-                  <p>2024</p>
+                  <p>{book.year}</p>
                 </div>
 
                 <div className="mb-3 flex items-center gap-2">
                   <h2 className="text-lg font-bold text-gray-700">
                     Publisher :
                   </h2>
-                  <p>Lalalala Jaya</p>
+                  <p>{book.publisher}</p>
                 </div>
 
                 <div className="mb-3 flex items-center gap-2">
                   <h2 className="text-lg font-bold text-gray-700">Page :</h2>
-                  <p>200</p>
+                  <p>{book.page}</p>
                 </div>
 
                 <div className="mb-3 flex items-center gap-2">
                   <h2 className="text-lg font-bold text-gray-700">
                     Total Books :
                   </h2>
-                  <p>20</p>
+                  <p>{book.total_book}</p>
                 </div>
 
                 <div className="mb-3">
@@ -123,10 +145,7 @@ export default function BookDetail() {
                     Description :
                   </h2>
                   <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Rerum iste corporis quos quas earum obcaecati facere ipsum
-                    perferendis consectetur officia tempora corrupti, illum
-                    cupiditate voluptas quisquam ut optio consequuntur aut.
+                    {book.description}
                   </p>
                 </div>
                 <div className="py-6 mb-6 border-t border-b border-gray-300">
@@ -540,36 +559,23 @@ export default function BookDetail() {
                       <div className="relative mb-6 lg:h-[400px]">
                         <img
                           className="object-contain w-full lg:h-full"
-                          src="http://localhost:8000/assets/Ayah_20231205.jpg"
-                          alt=""
+                          src={book ? url + book.cover : ''}                                
+                          alt={book ? book.title : ''}
                         />
                       </div>
 
                       <div className="flex flex-wrap justify-evenly items-start gap-3 px-4">
-                        <button className="border text-deep-purple-accent-200 border-deep-purple-accent-200 bg-whitetext-deep-purple-accent-200 hover:bg-gray-100 transition-all rounded px-2 py-0.5">
-                          Romance
-                        </button>
-                        <button className="border text-deep-purple-accent-200 border-deep-purple-accent-200 bg-whitetext-deep-purple-accent-200 hover:bg-gray-100 transition-all rounded px-2 py-0.5">
-                          Comedy
-                        </button>
-                        <button className="border text-deep-purple-accent-200 border-deep-purple-accent-200 bg-whitetext-deep-purple-accent-200 hover:bg-gray-100 transition-all rounded px-2 py-0.5">
-                          Action
-                        </button>
-                        <button className="border text-deep-purple-accent-200 border-deep-purple-accent-200 bg-whitetext-deep-purple-accent-200 hover:bg-gray-100 transition-all rounded px-2 py-0.5">
-                          Slice of Life
-                        </button>
-                        <button className="border text-deep-purple-accent-200 border-deep-purple-accent-200 bg-whitetext-deep-purple-accent-200 hover:bg-gray-100 transition-all rounded px-2 py-0.5">
-                          Vanilla
-                        </button>
-                        <button className="border text-deep-purple-accent-200 border-deep-purple-accent-200 bg-whitetext-deep-purple-accent-200 hover:bg-gray-100 transition-all rounded px-2 py-0.5">
-                          Action
-                        </button>
-                        <button className="border text-deep-purple-accent-200 border-deep-purple-accent-200 bg-whitetext-deep-purple-accent-200 hover:bg-gray-100 transition-all rounded px-2 py-0.5">
-                          Slice of Life
-                        </button>
-                        <button className="border text-deep-purple-accent-200 border-deep-purple-accent-200 bg-whitetext-deep-purple-accent-200 hover:bg-gray-100 transition-all rounded px-2 py-0.5">
-                          Vanilla
-                        </button>
+                        {
+                          book && book.categories ? book.categories.map(category => {
+                            return (
+                              <button className="border text-deep-purple-accent-200 border-deep-purple-accent-200 bg-whitetext-deep-purple-accent-200 hover:bg-gray-100 transition-all rounded px-2 py-0.5">
+                                {category.name}
+                              </button>
+                            )
+                          })
+                          :
+                          ''
+                        }
                       </div>
                     </div>
                   </div>
